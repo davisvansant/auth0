@@ -1,5 +1,5 @@
 [workspace]
 
 members = [
-  
+  "auth0_authentication_api"
 ]
