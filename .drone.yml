@@ -1,0 +1,14 @@
+kind: pipeline
+name: default
+
+steps:
+- name: auth0
+  image: rust:1.45.2
+  environment:
+    RUST_BACKTRACE: full
+  commands:
+  - rustc --version
+  - rustup component add rustfmt clippy
+  - cargo fmt -- --check
+  - cargo clippy --workspace
+  - cargo test --workspace
