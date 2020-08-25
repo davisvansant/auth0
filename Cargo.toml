@@ -1,5 +1,6 @@
 [workspace]
 
 members = [
-  "auth0_authentication_api"
+  "auth0_authentication_api",
+  "auth0_management_api"
 ]
