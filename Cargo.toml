@@ -14,6 +14,7 @@ license = "MIT"
 [workspace]
 
 members = [
+  "authentication",
   "auth0_authentication_api",
   "auth0_management_api"
 ]
