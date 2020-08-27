@@ -15,6 +15,5 @@ license = "MIT"
 
 members = [
   "authentication",
-  "auth0_authentication_api",
-  "auth0_management_api"
+  "management"
 ]

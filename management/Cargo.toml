@@ -1,5 +1,5 @@
 [package]
-name = "auth0_management_api"
+name = "management"
 version = "0.1.0"
 authors = ["Davis Van Sant <davisvansant@users.noreply.github.com>"]
 edition = "2018"
