@@ -11,4 +11,4 @@ steps:
   - rustup component add rustfmt clippy
   - cargo fmt -- --check
   - cargo clippy --workspace
-  - cargo test --workspace
+  - cargo test --workspace --all-features
