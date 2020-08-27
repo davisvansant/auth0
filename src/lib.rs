@@ -1,3 +1,9 @@
+#[cfg(feature = "default")]
+pub use authentication::*;
+
+#[cfg(feature = "management_api")]
+pub use management::*;
+
 #[cfg(test)]
 mod tests {
     #[test]

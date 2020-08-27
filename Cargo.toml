@@ -9,7 +9,13 @@ license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[features]
+default = [ "authentication" ]
+management_api = [ "management" ]
+
 [dependencies]
+authentication = { path = "./authentication", optional = true }
+management = { path = "./management", optional = true }
 
 [workspace]
 
