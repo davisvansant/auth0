@@ -28,6 +28,8 @@ mod tests {
     use super::*;
     use crate::login::Login;
     use crate::login::Social;
+    use crate::logout::Logout;
+    use crate::logout::RequestParameters;
     #[test]
     fn it_works() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
@@ -42,7 +44,14 @@ mod tests {
             // state: None,
             // additional_parameters: None,
         };
+        let logout = RequestParameters {
+            return_to: String::from("some_awesome_return"),
+            client_id: String::from("some_awesome_client_id"),
+            federated: String::from("some_awesome_federated"),
+        };
         let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
+        let logout_parameters = logout::LogoutRequest::collect(logout);
         management.authorize(parameters);
+        management.logout(logout_parameters);
     }
 }
