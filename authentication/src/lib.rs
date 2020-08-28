@@ -1,6 +1,7 @@
 use reqwest::Url;
 
 pub mod login;
+pub mod logout;
 
 pub enum AuthenicationMethod {
     OAuth2Token(String),
