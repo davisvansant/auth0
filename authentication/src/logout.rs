@@ -5,6 +5,7 @@ use std::collections::BTreeMap;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestParameters {
+    #[serde(rename(serialize = "returnTo"))]
     pub return_to: String,
     pub client_id: String,
     pub federated: String,
