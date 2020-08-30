@@ -33,6 +33,7 @@ mod tests {
     use crate::logout::Logout;
     use crate::logout::RequestParameters;
     use crate::passwordless::*;
+    use crate::signup::*;
     #[test]
     fn it_works() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
@@ -71,6 +72,20 @@ mod tests {
             audience: String::from("some_awesome_audience"),
             scope: String::from("some_awesome_scope"),
         };
+        let signup = signup::RequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            email: String::from("some_awesome_email"),
+            password: String::from("some_awesome_password"),
+            connection: String::from("some_awesome_connection"),
+            username: Some(String::from("some_awesome_username")),
+            given_name: None,
+            family_name: None,
+            name: None,
+            nickname: None,
+            picture: None,
+            user_metadata: None,
+        };
+
         let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
         let logout_parameters = logout::LogoutRequest::collect(logout);
         let passwordless_code_parameters = passwordless::PasswordlessRequest::collect(
@@ -79,9 +94,11 @@ mod tests {
         let passwordless_login_parameters = passwordless::PasswordlessRequest::collect(
             passwordless::RequestType::AuthenticateUser(passwordless_login),
         );
+        let signup_parameters = signup::SignupRequest::collect(signup);
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
         management.passwordless_login(passwordless_login_parameters);
+        management.signup(signup_parameters);
     }
 }
