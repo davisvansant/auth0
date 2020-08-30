@@ -3,6 +3,7 @@ use reqwest::Url;
 pub mod login;
 pub mod logout;
 pub mod passwordless;
+pub mod signup;
 
 pub enum AuthenicationMethod {
     OAuth2Token(String),
