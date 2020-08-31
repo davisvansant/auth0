@@ -29,12 +29,14 @@ impl Api {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::change_password::*;
     use crate::login::Login;
     use crate::login::Social;
     use crate::logout::Logout;
     use crate::logout::RequestParameters;
     use crate::passwordless::*;
     use crate::signup::*;
+
     #[test]
     fn it_works() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
@@ -86,6 +88,11 @@ mod tests {
             picture: None,
             user_metadata: None,
         };
+        let change_password = change_password::RequestParameters {
+            client_id: None,
+            email: String::from("some_awesome_email"),
+            connection: String::from("some_awesome_database_connection"),
+        };
 
         let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
         let logout_parameters = logout::LogoutRequest::collect(logout);
@@ -96,10 +103,13 @@ mod tests {
             passwordless::RequestType::AuthenticateUser(passwordless_login),
         );
         let signup_parameters = signup::SignupRequest::collect(signup);
+        let change_password_parameters =
+            change_password::ChangePasswordRequest::collect(change_password);
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
         management.passwordless_login(passwordless_login_parameters);
         management.signup(signup_parameters);
+        management.change_password(change_password_parameters);
     }
 }
