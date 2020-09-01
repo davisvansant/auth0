@@ -37,6 +37,7 @@ mod tests {
     use crate::logout::RequestParameters;
     use crate::passwordless::*;
     use crate::signup::*;
+    use crate::user_profile::*;
 
     #[test]
     fn it_works() {
@@ -94,6 +95,9 @@ mod tests {
             email: String::from("some_awesome_email"),
             connection: String::from("some_awesome_database_connection"),
         };
+        let user_profile = user_profile::RequestParameters {
+            access_token: String::from("some_awesome_access_token"),
+        };
 
         let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
         let logout_parameters = logout::LogoutRequest::collect(logout);
@@ -106,11 +110,13 @@ mod tests {
         let signup_parameters = signup::SignupRequest::collect(signup);
         let change_password_parameters =
             change_password::ChangePasswordRequest::collect(change_password);
+        let get_user_info = user_profile::UserProfileRequest::collect(user_profile);
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
         management.passwordless_login(passwordless_login_parameters);
         management.signup(signup_parameters);
         management.change_password(change_password_parameters);
+        management.userinfo(get_user_info);
     }
 }
