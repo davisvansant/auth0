@@ -5,6 +5,7 @@ pub mod login;
 pub mod logout;
 pub mod passwordless;
 pub mod signup;
+pub mod user_profile;
 
 pub enum AuthenicationMethod {
     OAuth2Token(String),
