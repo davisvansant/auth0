@@ -3,6 +3,7 @@ use reqwest::Url;
 pub mod change_password;
 pub mod login;
 pub mod logout;
+pub mod mfa;
 pub mod passwordless;
 pub mod signup;
 pub mod user_profile;
