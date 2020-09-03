@@ -7,8 +7,13 @@ pub struct AcceptRequestParameters {
     pub connection: Option<String>,
 }
 
+pub struct GetMetadataRequestParameters {
+    pub client_id: String,
+}
+
 pub trait SAML {
     fn accept_request(&self, parameters: AcceptRequestParameters) -> RequestBuilder;
+    fn get_metadata(&self, request: GetMetadataRequestParameters) -> RequestBuilder;
 }
 
 impl SAML for Api {
@@ -27,5 +32,14 @@ impl SAML for Api {
         client.get(url).query(&QueryParameter {
             connection: request.connection,
         })
+    }
+
+    fn get_metadata(&self, request: GetMetadataRequestParameters) -> RequestBuilder {
+        let client = reqwest::Client::new();
+        let endpoint = String::from("/samlp/metadata/");
+        let base_url = self.base_url.join(&endpoint).unwrap();
+        let url = base_url.join(&request.client_id).unwrap();
+
+        client.get(url)
     }
 }

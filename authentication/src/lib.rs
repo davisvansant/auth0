@@ -176,6 +176,9 @@ mod tests {
             connection: Some(String::from("some_awesome_connection")),
             // connection: None,
         };
+        let saml_get_metadata = saml::GetMetadataRequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+        };
 
         management.authorize(parameters);
         management.logout(logout_parameters);
@@ -192,5 +195,6 @@ mod tests {
         management.list_authenticators(list_authenticators);
         management.delete_authenticator(delete_authenticator);
         management.accept_request(saml_accept_request);
+        management.get_metadata(saml_get_metadata);
     }
 }
