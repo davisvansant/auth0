@@ -180,6 +180,11 @@ mod tests {
             client_id: String::from("some_awesome_client_id"),
         };
 
+        let saml_idp_flow = saml::IdPFlowRequestParameters {
+            connection: String::from("some_awesome_connection"),
+            saml_response: String::from("some_awesome_saml_response"),
+        };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -196,5 +201,6 @@ mod tests {
         management.delete_authenticator(delete_authenticator);
         management.accept_request(saml_accept_request);
         management.get_metadata(saml_get_metadata);
+        management.idp_flow(saml_idp_flow);
     }
 }
