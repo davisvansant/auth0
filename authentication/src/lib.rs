@@ -36,6 +36,7 @@ mod tests {
     use crate::login::Social;
     use crate::logout::Logout;
     use crate::logout::RequestParameters;
+    use crate::mfa::*;
     use crate::passwordless::*;
     use crate::signup::*;
     use crate::user_profile::*;
@@ -99,7 +100,50 @@ mod tests {
         let user_profile = user_profile::RequestParameters {
             access_token: String::from("some_awesome_access_token"),
         };
-
+        let challenge_request = ChallengeRequestParameters {
+            mfa_token: String::from("some_awesome_mfa_token"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            challenge_type: None,
+            oob_channel: None,
+            authenticator_id: None,
+        };
+        let otp_request = OTPRequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            mfa_token: String::from("some_awesome_mfa_token"),
+            otp: String::from("some_awesome_otp"),
+        };
+        let oob_request = OOBRequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            mfa_token: String::from("some_awesome_mfa_token"),
+            oob_code: String::from("some_awesome_otp"),
+            binding_code: None,
+        };
+        let recovery_code = RecoveryCodeRequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            mfa_token: String::from("some_awesome_mfa_token"),
+            recovery_code: String::from("some_awesome_mfa_token"),
+        };
+        let add_authenticator = AddAuthenticatorRequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            authenticator_types: String::from("some_awesome_authenticator_type"),
+            oob_channel: None,
+            phone_number: None,
+        };
+        let list_authenticators = ListAuthenticatorsRequestParameters {
+            access_token: String::from("some_awesome_access_token"),
+        };
+        let delete_authenticator = DeleteAuthenticatorRequestParameters {
+            access_token: String::from("some_awesome_access_token"),
+            authenticator_id: String::from("some_awesome_authenticator_id"),
+        };
         let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
         let logout_parameters = logout::LogoutRequest::collect(logout);
         let passwordless_code_parameters = passwordless::PasswordlessRequest::collect(
@@ -112,6 +156,20 @@ mod tests {
         let change_password_parameters =
             change_password::ChangePasswordRequest::collect(change_password);
         let get_user_info = user_profile::UserProfileRequest::collect(user_profile);
+        let challenge_request_parameters = mfa::MultiFactorAuthenticationRequest::collect(
+            mfa::RequestType::Challenge(challenge_request),
+        );
+        let otp_request_parameters =
+            mfa::MultiFactorAuthenticationRequest::collect(mfa::RequestType::OTP(otp_request));
+        let oob_request_parameters =
+            mfa::MultiFactorAuthenticationRequest::collect(mfa::RequestType::OOB(oob_request));
+        let recovery_code_parameters = mfa::MultiFactorAuthenticationRequest::collect(
+            mfa::RequestType::Recovery(recovery_code),
+        );
+        let add_authenticator_parameters = mfa::MultiFactorAuthenticationRequest::collect(
+            mfa::RequestType::AddAuthenticator(add_authenticator),
+        );
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -119,5 +177,12 @@ mod tests {
         management.signup(signup_parameters);
         management.change_password(change_password_parameters);
         management.userinfo(get_user_info);
+        management.challenge_request(challenge_request_parameters);
+        management.verify_with_otp(otp_request_parameters);
+        management.verify_with_oob(oob_request_parameters);
+        management.verify_with_recovery_code(recovery_code_parameters);
+        management.add_authenticator(add_authenticator_parameters);
+        management.list_authenticators(list_authenticators);
+        management.delete_authenticator(delete_authenticator);
     }
 }
