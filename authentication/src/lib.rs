@@ -5,6 +5,7 @@ pub mod login;
 pub mod logout;
 pub mod mfa;
 pub mod passwordless;
+pub mod saml;
 pub mod signup;
 pub mod user_profile;
 
