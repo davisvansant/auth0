@@ -39,6 +39,7 @@ mod tests {
     use crate::logout::RequestParameters;
     use crate::mfa::*;
     use crate::passwordless::*;
+    use crate::saml::*;
     use crate::signup::*;
     use crate::user_profile::*;
 
@@ -170,6 +171,11 @@ mod tests {
         let add_authenticator_parameters = mfa::MultiFactorAuthenticationRequest::collect(
             mfa::RequestType::AddAuthenticator(add_authenticator),
         );
+        let saml_accept_request = saml::AcceptRequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            connection: Some(String::from("some_awesome_connection")),
+            // connection: None,
+        };
 
         management.authorize(parameters);
         management.logout(logout_parameters);
@@ -185,5 +191,6 @@ mod tests {
         management.add_authenticator(add_authenticator_parameters);
         management.list_authenticators(list_authenticators);
         management.delete_authenticator(delete_authenticator);
+        management.accept_request(saml_accept_request);
     }
 }
