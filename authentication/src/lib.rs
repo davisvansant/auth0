@@ -8,6 +8,7 @@ pub mod passwordless;
 pub mod saml;
 pub mod signup;
 pub mod user_profile;
+pub mod ws_federation;
 
 pub enum AuthenicationMethod {
     OAuth2Token(String),
