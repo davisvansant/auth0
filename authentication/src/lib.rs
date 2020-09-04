@@ -43,6 +43,7 @@ mod tests {
     use crate::saml::*;
     use crate::signup::*;
     use crate::user_profile::*;
+    use crate::ws_federation::*;
 
     #[test]
     fn it_works() {
@@ -186,6 +187,14 @@ mod tests {
             saml_response: String::from("some_awesome_saml_response"),
         };
 
+        let ws_federation_accept_request = ws_federation::AcceptRequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            wtrealm: None,
+            whr: None,
+            wctx: None,
+            wreply: None,
+        };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -200,8 +209,12 @@ mod tests {
         management.add_authenticator(add_authenticator_parameters);
         management.list_authenticators(list_authenticators);
         management.delete_authenticator(delete_authenticator);
-        management.accept_request(saml_accept_request);
-        management.get_metadata(saml_get_metadata);
+        // management.accept_request(saml_accept_request);
+        // management.get_metadata(saml_get_metadata);
+        saml::SAML::accept_request(&management, saml_accept_request);
+        saml::SAML::get_metadata(&management, saml_get_metadata);
         management.idp_flow(saml_idp_flow);
+        ws_federation::WSFederation::accept_request(&management, ws_federation_accept_request);
+        ws_federation::WSFederation::get_metadata(&management);
     }
 }
