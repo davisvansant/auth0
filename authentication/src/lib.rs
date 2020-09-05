@@ -1,6 +1,7 @@
 use reqwest::Url;
 
 pub mod change_password;
+pub mod dynamic_client_registration;
 pub mod login;
 pub mod logout;
 pub mod mfa;
