@@ -35,6 +35,7 @@ impl Api {
 mod tests {
     use super::*;
     use crate::change_password::*;
+    use crate::dynamic_client_registration::*;
     use crate::login::Login;
     use crate::login::Social;
     use crate::logout::Logout;
@@ -196,6 +197,12 @@ mod tests {
             wreply: None,
         };
 
+        let dynamic_client_registration_request = dynamic_client_registration::RequestParameters {
+            client_name: Some(String::from("some_awesome_client_name")),
+            redirect_uris: vec![String::from("some_awesome_uri")],
+            token_endpoint_auth_method: Some(String::from("some_awesome_auth_method")),
+        };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -217,5 +224,6 @@ mod tests {
         management.idp_flow(saml_idp_flow);
         ws_federation::WSFederation::accept_request(&management, ws_federation_accept_request);
         ws_federation::WSFederation::get_metadata(&management);
+        management.register(dynamic_client_registration_request);
     }
 }
