@@ -35,6 +35,7 @@ impl Api {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::authorize_application::*;
     use crate::change_password::*;
     use crate::dynamic_client_registration::*;
     use crate::login::Login;
@@ -204,6 +205,18 @@ mod tests {
             token_endpoint_auth_method: Some(String::from("some_awesome_auth_method")),
         };
 
+        let authorization_code_flow_request =
+            authorize_application::AuthorizationCodeFlowRequestParamaters {
+                audience: Some(String::from("some_awesome_audience")),
+                scope: Some(String::from("some_awesome_scope")),
+                response_type: String::from("some_awesome_response_type"),
+                client_id: String::from("some_awesome_client_id"),
+                state: Some(String::from("some_awesome_state")),
+                redirect_uri: None,
+                connection: None,
+                prompt: None,
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -226,5 +239,6 @@ mod tests {
         ws_federation::WSFederation::accept_request(&management, ws_federation_accept_request);
         ws_federation::WSFederation::get_metadata(&management);
         management.register(dynamic_client_registration_request);
+        management.authorization_code_flow(authorization_code_flow_request);
     }
 }
