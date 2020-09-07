@@ -38,6 +38,7 @@ mod tests {
     use super::*;
     use crate::authorize_application::*;
     use crate::change_password::*;
+    use crate::device_code::*;
     use crate::dynamic_client_registration::*;
     use crate::login::Login;
     use crate::login::Social;
@@ -244,6 +245,12 @@ mod tests {
             prompt: None,
         };
 
+        let get_device_code_parameters = device_code::RequestParamaters {
+            audience: Some(String::from("some_unique_api_id")),
+            scope: Some(String::from("some_awesome_scope")),
+            client_id: String::from("some_awesome_application_id"),
+        };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -269,5 +276,6 @@ mod tests {
         management.authorization_code_flow(authorization_code_flow_request);
         management.authorization_code_flow_with_pkce(authorization_code_flow_with_pkce_request);
         management.implicit_flow(implicit_flow_request);
+        management.device_authorization_flow(get_device_code_parameters);
     }
 }
