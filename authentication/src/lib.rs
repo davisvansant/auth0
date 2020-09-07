@@ -231,6 +231,18 @@ mod tests {
                 prompt: None,
             };
 
+        let implicit_flow_request = authorize_application::ImplicitFlowRequestParamaters {
+            audience: Some(String::from("some_awesome_audience")),
+            scope: Some(String::from("some_awesome_scope")),
+            response_type: String::from("some_awesome_response_type"),
+            client_id: String::from("some_awesome_client_id"),
+            state: Some(String::from("some_awesome_state")),
+            redirect_uri: None,
+            nonce: None,
+            connection: None,
+            prompt: None,
+        };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -255,5 +267,6 @@ mod tests {
         management.register(dynamic_client_registration_request);
         management.authorization_code_flow(authorization_code_flow_request);
         management.authorization_code_flow_with_pkce(authorization_code_flow_with_pkce_request);
+        management.implicit_flow(implicit_flow_request);
     }
 }
