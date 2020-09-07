@@ -217,6 +217,20 @@ mod tests {
                 prompt: None,
             };
 
+        let authorization_code_flow_with_pkce_request =
+            authorize_application::AuthorizationCodeFlowWithPKCERequestParamaters {
+                audience: Some(String::from("some_awesome_audience")),
+                scope: Some(String::from("some_awesome_scope")),
+                response_type: String::from("some_awesome_response_type"),
+                client_id: String::from("some_awesome_client_id"),
+                state: Some(String::from("some_awesome_state")),
+                redirect_uri: None,
+                code_challenge_method: String::from("some_awesome_code_challenege_method"),
+                code_challenge: String::from("some_awesome_code_challenge"),
+                connection: None,
+                prompt: None,
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -240,5 +254,6 @@ mod tests {
         ws_federation::WSFederation::get_metadata(&management);
         management.register(dynamic_client_registration_request);
         management.authorization_code_flow(authorization_code_flow_request);
+        management.authorization_code_flow_with_pkce(authorization_code_flow_with_pkce_request);
     }
 }
