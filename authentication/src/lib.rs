@@ -2,6 +2,7 @@ use reqwest::Url;
 
 pub mod authorize_application;
 pub mod change_password;
+pub mod device_code;
 pub mod dynamic_client_registration;
 pub mod login;
 pub mod logout;
