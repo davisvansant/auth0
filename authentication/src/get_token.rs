@@ -27,6 +27,13 @@ pub struct AuthorizationCodeFlowWithPKCERequestParamaters {
     pub redirect_uri: Option<String>,
 }
 
+pub struct ClientCredentialsFlowRequestParamaters {
+    pub grant_type: String,
+    pub client_id: String,
+    pub client_secret: String,
+    pub audience: String,
+}
+
 pub trait GetToken {
     fn authorization_code_flow(
         &self,
@@ -36,6 +43,11 @@ pub trait GetToken {
     fn authorization_code_flow_with_pkce(
         &self,
         request: AuthorizationCodeFlowWithPKCERequestParamaters,
+    ) -> RequestBuilder;
+
+    fn client_credentials_flow(
+        &self,
+        request: ClientCredentialsFlowRequestParamaters,
     ) -> RequestBuilder;
 }
 
@@ -91,6 +103,30 @@ impl GetToken for Api {
             code: request.code,
             code_verifier: request.code_verifier,
             redirect_uri: request.redirect_uri,
+        })
+    }
+
+    fn client_credentials_flow(
+        &self,
+        request: ClientCredentialsFlowRequestParamaters,
+    ) -> RequestBuilder {
+        #[derive(Serialize, Deserialize)]
+        struct QueryParameters {
+            grant_type: String,
+            client_id: String,
+            client_secret: String,
+            audience: String,
+        }
+
+        let client = reqwest::Client::new();
+        let endpoint = String::from("/oauth/token");
+        let url = self.base_url.join(&endpoint).unwrap();
+
+        client.post(url).form(&QueryParameters {
+            grant_type: request.grant_type,
+            client_id: request.client_id,
+            client_secret: request.client_secret,
+            audience: request.audience,
         })
     }
 }

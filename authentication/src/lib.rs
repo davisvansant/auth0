@@ -271,6 +271,14 @@ mod tests {
                 redirect_uri: None,
             };
 
+        let get_token_client_credentials_flow_parameters =
+            get_token::ClientCredentialsFlowRequestParamaters {
+                grant_type: String::from("some_awesome_grant_type"),
+                client_id: String::from("some_awesome_client_id"),
+                client_secret: String::from("some_awesome_client_secret"),
+                audience: String::from("some_awesome_audience_api"),
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
