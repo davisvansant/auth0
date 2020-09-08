@@ -262,6 +262,15 @@ mod tests {
                 redirect_uri: None,
             };
 
+        let get_token_authorization_code_flow_with_pkce_parameters =
+            get_token::AuthorizationCodeFlowWithPKCERequestParamaters {
+                grant_type: String::from("some_awesome_grant"),
+                client_id: String::from("some_awesome_client_id"),
+                code: String::from("some_awesome_code"),
+                code_verifier: String::from("some_awesome_code_verifier"),
+                redirect_uri: None,
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -289,12 +298,20 @@ mod tests {
             &management,
             authorization_code_flow_request,
         );
-        management.authorization_code_flow_with_pkce(authorization_code_flow_with_pkce_request);
+        // management.authorization_code_flow_with_pkce(authorization_code_flow_with_pkce_request);
+        authorize_application::AuthorizeApplication::authorization_code_flow_with_pkce(
+            &management,
+            authorization_code_flow_with_pkce_request,
+        );
         management.implicit_flow(implicit_flow_request);
         management.device_authorization_flow(get_device_code_parameters);
         get_token::GetToken::authorization_code_flow(
             &management,
             get_token_authorization_code_flow_parameters,
+        );
+        get_token::GetToken::authorization_code_flow_with_pkce(
+            &management,
+            get_token_authorization_code_flow_with_pkce_parameters,
         );
     }
 }
