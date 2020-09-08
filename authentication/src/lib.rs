@@ -4,6 +4,7 @@ pub mod authorize_application;
 pub mod change_password;
 pub mod device_code;
 pub mod dynamic_client_registration;
+pub mod get_token;
 pub mod login;
 pub mod logout;
 pub mod mfa;
@@ -40,6 +41,7 @@ mod tests {
     use crate::change_password::*;
     use crate::device_code::*;
     use crate::dynamic_client_registration::*;
+    use crate::get_token::*;
     use crate::login::Login;
     use crate::login::Social;
     use crate::logout::Logout;
@@ -251,6 +253,15 @@ mod tests {
             client_id: String::from("some_awesome_application_id"),
         };
 
+        let get_token_authorization_code_flow_parameters =
+            get_token::AuthorizationCodeFlowRequestParamaters {
+                grant_type: String::from("some_awesome_grant"),
+                client_id: String::from("some_awesome_client_id"),
+                client_secret: String::from("some_awesome_client_secret"),
+                code: String::from("some_awesome_code"),
+                redirect_uri: None,
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -273,9 +284,17 @@ mod tests {
         ws_federation::WSFederation::accept_request(&management, ws_federation_accept_request);
         ws_federation::WSFederation::get_metadata(&management);
         management.register(dynamic_client_registration_request);
-        management.authorization_code_flow(authorization_code_flow_request);
+        // management.authorization_code_flow(authorization_code_flow_request);
+        authorize_application::AuthorizeApplication::authorization_code_flow(
+            &management,
+            authorization_code_flow_request,
+        );
         management.authorization_code_flow_with_pkce(authorization_code_flow_with_pkce_request);
         management.implicit_flow(implicit_flow_request);
         management.device_authorization_flow(get_device_code_parameters);
+        get_token::GetToken::authorization_code_flow(
+            &management,
+            get_token_authorization_code_flow_parameters,
+        );
     }
 }
