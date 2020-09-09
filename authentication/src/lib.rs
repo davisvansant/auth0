@@ -334,6 +334,7 @@ mod tests {
             &management,
             get_token_authorization_code_flow_with_pkce_parameters,
         );
+        management.client_credentials_flow(get_token_client_credentials_flow_parameters);
         management.resource_owner_password(get_token_resource_owner_password_request);
     }
 }
