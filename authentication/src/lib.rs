@@ -279,6 +279,19 @@ mod tests {
                 audience: String::from("some_awesome_audience_api"),
             };
 
+        let get_token_resource_owner_password_request =
+            get_token::ResourceOwnerPasswordRequestParamaters {
+                grant_type: String::from("some_awesome_grant_type"),
+                client_id: String::from("some_awesome_client_id"),
+                client_secret: None,
+                audience: None,
+                username: String::from("some_awesome_username"),
+                password: String::from("some_awesome_password"),
+                scope: None,
+                realm: None,
+                auth0_forwarded_for: Some(String::from("some_ip_address")),
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -321,5 +334,6 @@ mod tests {
             &management,
             get_token_authorization_code_flow_with_pkce_parameters,
         );
+        management.resource_owner_password(get_token_resource_owner_password_request);
     }
 }

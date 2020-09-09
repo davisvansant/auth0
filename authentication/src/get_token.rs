@@ -1,4 +1,5 @@
 use crate::Api;
+use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
@@ -34,6 +35,18 @@ pub struct ClientCredentialsFlowRequestParamaters {
     pub audience: String,
 }
 
+pub struct ResourceOwnerPasswordRequestParamaters {
+    pub grant_type: String,
+    pub client_id: String,
+    pub client_secret: Option<String>,
+    pub audience: Option<String>,
+    pub username: String,
+    pub password: String,
+    pub scope: Option<String>,
+    pub realm: Option<String>,
+    pub auth0_forwarded_for: Option<String>,
+}
+
 pub trait GetToken {
     fn authorization_code_flow(
         &self,
@@ -48,6 +61,11 @@ pub trait GetToken {
     fn client_credentials_flow(
         &self,
         request: ClientCredentialsFlowRequestParamaters,
+    ) -> RequestBuilder;
+
+    fn resource_owner_password(
+        &self,
+        request: ResourceOwnerPasswordRequestParamaters,
     ) -> RequestBuilder;
 }
 
@@ -128,5 +146,61 @@ impl GetToken for Api {
             client_secret: request.client_secret,
             audience: request.audience,
         })
+    }
+
+    fn resource_owner_password(
+        &self,
+        request: ResourceOwnerPasswordRequestParamaters,
+    ) -> RequestBuilder {
+        #[derive(Serialize, Deserialize)]
+        struct QueryParameters {
+            grant_type: String,
+            client_id: String,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            client_secret: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            audience: Option<String>,
+            username: String,
+            password: String,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            scope: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            realm: Option<String>,
+        }
+
+        let client = reqwest::Client::new();
+        let endpoint = String::from("/oauth/token");
+        let url = self.base_url.join(&endpoint).unwrap();
+
+        if request.auth0_forwarded_for.is_some() {
+            let mut headers = HeaderMap::new();
+            let header_key = String::from("auth0-forwarded-for");
+            let header_value = request.auth0_forwarded_for.unwrap();
+            headers.insert(
+                HeaderName::from_bytes(header_key.as_bytes()).unwrap(),
+                HeaderValue::from_bytes(header_value.as_bytes()).unwrap(),
+            );
+            client.post(url).headers(headers).form(&QueryParameters {
+                grant_type: request.grant_type,
+                client_id: request.client_id,
+                client_secret: request.client_secret,
+                audience: request.audience,
+                username: request.username,
+                password: request.password,
+                scope: request.scope,
+                realm: request.realm,
+            })
+        } else {
+            client.post(url).form(&QueryParameters {
+                grant_type: request.grant_type,
+                client_id: request.client_id,
+                client_secret: request.client_secret,
+                audience: request.audience,
+                username: request.username,
+                password: request.password,
+                scope: request.scope,
+                realm: request.realm,
+            })
+        }
     }
 }
