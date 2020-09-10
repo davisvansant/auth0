@@ -299,6 +299,14 @@ mod tests {
                 device_code: String::from("some_awesome_device_code"),
             };
 
+        let get_token_refresh_token_request = get_token::RefreshTokenRequestParamaters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            refresh_token: String::from("some_awesome_fresh_token"),
+            scope: None,
+        };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -351,5 +359,6 @@ mod tests {
             &management,
             get_token_device_authorization_flow_request,
         );
+        management.refresh_token(get_token_refresh_token_request);
     }
 }

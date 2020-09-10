@@ -53,6 +53,14 @@ pub struct DeviceAuthorizationFlowRequestParamaters {
     pub device_code: String,
 }
 
+pub struct RefreshTokenRequestParamaters {
+    pub grant_type: String,
+    pub client_id: String,
+    pub client_secret: Option<String>,
+    pub refresh_token: String,
+    pub scope: Option<String>,
+}
+
 pub trait GetToken {
     fn authorization_code_flow(
         &self,
@@ -78,6 +86,8 @@ pub trait GetToken {
         &self,
         request: DeviceAuthorizationFlowRequestParamaters,
     ) -> RequestBuilder;
+
+    fn refresh_token(&self, request: RefreshTokenRequestParamaters) -> RequestBuilder;
 }
 
 impl GetToken for Api {
@@ -234,6 +244,31 @@ impl GetToken for Api {
             grant_type: request.grant_type,
             client_id: request.client_id,
             device_code: request.device_code,
+        })
+    }
+
+    fn refresh_token(&self, request: RefreshTokenRequestParamaters) -> RequestBuilder {
+        #[derive(Serialize, Deserialize)]
+        struct FormParameters {
+            pub grant_type: String,
+            pub client_id: String,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            pub client_secret: Option<String>,
+            pub refresh_token: String,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            pub scope: Option<String>,
+        }
+
+        let client = reqwest::Client::new();
+        let endpoint = String::from("/oauth/token");
+        let url = self.base_url.join(&endpoint).unwrap();
+
+        client.post(url).form(&FormParameters {
+            grant_type: request.grant_type,
+            client_id: request.client_id,
+            client_secret: request.client_secret,
+            refresh_token: request.refresh_token,
+            scope: request.scope,
         })
     }
 }
