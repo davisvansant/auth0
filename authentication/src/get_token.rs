@@ -47,6 +47,12 @@ pub struct ResourceOwnerPasswordRequestParamaters {
     pub auth0_forwarded_for: Option<String>,
 }
 
+pub struct DeviceAuthorizationFlowRequestParamaters {
+    pub grant_type: String,
+    pub client_id: String,
+    pub device_code: String,
+}
+
 pub trait GetToken {
     fn authorization_code_flow(
         &self,
@@ -66,6 +72,11 @@ pub trait GetToken {
     fn resource_owner_password(
         &self,
         request: ResourceOwnerPasswordRequestParamaters,
+    ) -> RequestBuilder;
+
+    fn device_authorization_flow(
+        &self,
+        request: DeviceAuthorizationFlowRequestParamaters,
     ) -> RequestBuilder;
 }
 
@@ -202,5 +213,27 @@ impl GetToken for Api {
                 realm: request.realm,
             })
         }
+    }
+
+    fn device_authorization_flow(
+        &self,
+        request: DeviceAuthorizationFlowRequestParamaters,
+    ) -> RequestBuilder {
+        #[derive(Serialize, Deserialize)]
+        struct FormParameters {
+            pub grant_type: String,
+            pub client_id: String,
+            pub device_code: String,
+        }
+
+        let client = reqwest::Client::new();
+        let endpoint = String::from("/oauth/token");
+        let url = self.base_url.join(&endpoint).unwrap();
+
+        client.post(url).form(&FormParameters {
+            grant_type: request.grant_type,
+            client_id: request.client_id,
+            device_code: request.device_code,
+        })
     }
 }

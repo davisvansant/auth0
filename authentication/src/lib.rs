@@ -292,6 +292,13 @@ mod tests {
                 auth0_forwarded_for: Some(String::from("some_ip_address")),
             };
 
+        let get_token_device_authorization_flow_request =
+            get_token::DeviceAuthorizationFlowRequestParamaters {
+                grant_type: String::from("some_awesome_grant_type"),
+                client_id: String::from("some_awesome_client_id"),
+                device_code: String::from("some_awesome_device_code"),
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -325,7 +332,11 @@ mod tests {
             authorization_code_flow_with_pkce_request,
         );
         management.implicit_flow(implicit_flow_request);
-        management.device_authorization_flow(get_device_code_parameters);
+        // management.device_authorization_flow(get_device_code_parameters);
+        device_code::GetDeviceCode::device_authorization_flow(
+            &management,
+            get_device_code_parameters,
+        );
         get_token::GetToken::authorization_code_flow(
             &management,
             get_token_authorization_code_flow_parameters,
@@ -336,5 +347,9 @@ mod tests {
         );
         management.client_credentials_flow(get_token_client_credentials_flow_parameters);
         management.resource_owner_password(get_token_resource_owner_password_request);
+        get_token::GetToken::device_authorization_flow(
+            &management,
+            get_token_device_authorization_flow_request,
+        );
     }
 }
