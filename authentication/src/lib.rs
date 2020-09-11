@@ -49,6 +49,7 @@ mod tests {
     use crate::logout::RequestParameters;
     use crate::mfa::*;
     use crate::passwordless::*;
+    use crate::revoke_refresh_token::*;
     use crate::saml::*;
     use crate::signup::*;
     use crate::user_profile::*;
@@ -319,6 +320,12 @@ mod tests {
                 auth0_forwarded_for: None,
             };
 
+        let revoke_refresh_token_revoke_request = revoke_refresh_token::RequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: Some(String::from("some_awesome_client_secret")),
+            token: String::from("some_awesome_token"),
+        };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -374,5 +381,6 @@ mod tests {
         management.refresh_token(get_token_refresh_token_request);
         management
             .token_exchange_for_native_social(get_token_token_exchange_for_native_social_request);
+        management.revoke_refresh_token(revoke_refresh_token_revoke_request);
     }
 }
