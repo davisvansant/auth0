@@ -9,6 +9,7 @@ pub mod login;
 pub mod logout;
 pub mod mfa;
 pub mod passwordless;
+pub mod revoke_refresh_token;
 pub mod saml;
 pub mod signup;
 pub mod user_profile;
