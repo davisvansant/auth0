@@ -307,6 +307,17 @@ mod tests {
             scope: None,
         };
 
+        let get_token_token_exchange_for_native_social_request =
+            get_token::TokenExchangeForNativeSocialRequestParameters {
+                grant_type: String::from("some_awesome_grant_type"),
+                subject_token: String::from("some_awesome_subject_token"),
+                subject_token_type: String::from("some_awesome_subject_token_type"),
+                client_id: String::from("some_awesome_client_id"),
+                audience: None,
+                scope: None,
+                auth0_forwarded_for: None,
+            };
+
         management.authorize(parameters);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
@@ -360,5 +371,7 @@ mod tests {
             get_token_device_authorization_flow_request,
         );
         management.refresh_token(get_token_refresh_token_request);
+        management
+            .token_exchange_for_native_social(get_token_token_exchange_for_native_social_request);
     }
 }

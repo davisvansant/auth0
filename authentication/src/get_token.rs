@@ -61,6 +61,16 @@ pub struct RefreshTokenRequestParamaters {
     pub scope: Option<String>,
 }
 
+pub struct TokenExchangeForNativeSocialRequestParameters {
+    pub grant_type: String,
+    pub subject_token: String,
+    pub subject_token_type: String,
+    pub client_id: String,
+    pub audience: Option<String>,
+    pub scope: Option<String>,
+    pub auth0_forwarded_for: Option<String>,
+}
+
 pub trait GetToken {
     fn authorization_code_flow(
         &self,
@@ -88,6 +98,11 @@ pub trait GetToken {
     ) -> RequestBuilder;
 
     fn refresh_token(&self, request: RefreshTokenRequestParamaters) -> RequestBuilder;
+
+    fn token_exchange_for_native_social(
+        &self,
+        request: TokenExchangeForNativeSocialRequestParameters,
+    ) -> RequestBuilder;
 }
 
 impl GetToken for Api {
@@ -270,5 +285,53 @@ impl GetToken for Api {
             refresh_token: request.refresh_token,
             scope: request.scope,
         })
+    }
+
+    fn token_exchange_for_native_social(
+        &self,
+        request: TokenExchangeForNativeSocialRequestParameters,
+    ) -> RequestBuilder {
+        #[derive(Serialize, Deserialize)]
+        struct FormParameters {
+            pub grant_type: String,
+            pub subject_token: String,
+            pub subject_token_type: String,
+            pub client_id: String,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            pub audience: Option<String>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            pub scope: Option<String>,
+        }
+
+        let client = reqwest::Client::new();
+        let endpoint = String::from("/oauth/token");
+        let url = self.base_url.join(&endpoint).unwrap();
+
+        if request.auth0_forwarded_for.is_some() {
+            let mut headers = HeaderMap::new();
+            let header_key = String::from("auth0-forwarded-for");
+            let header_value = request.auth0_forwarded_for.unwrap();
+            headers.insert(
+                HeaderName::from_bytes(header_key.as_bytes()).unwrap(),
+                HeaderValue::from_bytes(header_value.as_bytes()).unwrap(),
+            );
+            client.post(url).headers(headers).form(&FormParameters {
+                grant_type: request.grant_type,
+                subject_token: request.subject_token,
+                subject_token_type: request.subject_token_type,
+                client_id: request.client_id,
+                audience: request.audience,
+                scope: request.scope,
+            })
+        } else {
+            client.post(url).form(&FormParameters {
+                grant_type: request.grant_type,
+                subject_token: request.subject_token,
+                subject_token_type: request.subject_token_type,
+                client_id: request.client_id,
+                audience: request.audience,
+                scope: request.scope,
+            })
+        }
     }
 }
