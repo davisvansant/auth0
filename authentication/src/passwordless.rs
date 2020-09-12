@@ -1,7 +1,6 @@
 use crate::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
 
 #[derive(Serialize, Deserialize)]
 pub enum RequestType {
