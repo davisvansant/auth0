@@ -40,7 +40,7 @@ mod tests {
     use super::*;
     use crate::authorize_application::*;
     use crate::change_password::*;
-    use crate::device_code::*;
+    // use crate::device_code::*;
     use crate::dynamic_client_registration::*;
     use crate::get_token::*;
     use crate::login::Login;
@@ -53,7 +53,7 @@ mod tests {
     use crate::saml::*;
     use crate::signup::*;
     use crate::user_profile::*;
-    use crate::ws_federation::*;
+    // use crate::ws_federation::*;
 
     #[test]
     fn it_works() {
