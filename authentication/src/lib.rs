@@ -44,7 +44,7 @@ mod tests {
     use crate::dynamic_client_registration::*;
     use crate::get_token::*;
     use crate::login::Login;
-    use crate::login::Social;
+    // use crate::login::Social;
     use crate::logout::Logout;
     use crate::logout::RequestParameters;
     use crate::mfa::*;
@@ -60,14 +60,29 @@ mod tests {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let management = Api::init(base_url, authentication);
-        let social = Social {
-            // response_type: ResponseType::Token(String::from("some_awesome_token")),
-            response_type: String::from("some_awesome_token"),
-            client_id: "some_awesome_client_id".to_string(),
-            // connection: None,
-            redirect_uri: "some_new_awesome_url".to_string(),
-            // state: None,
-            // additional_parameters: None,
+        let login_social_request = login::social::RequestParamaters {
+            response_type: String::from("some_awesome_response_type"),
+            client_id: String::from("some_awesome_client_id"),
+            connection: None,
+            redirect_uri: String::from("some_awesome_redirect_uri"),
+            state: None,
+            additional_parameters: None,
+        };
+
+        let login_passive_request = login::passive::RequestParamaters {
+            response_type: String::from("some_awesome_response_type"),
+            client_id: String::from("some_awesome_client_id"),
+            connection: None,
+            redirect_uri: String::from("some_awesome_redirect_uri"),
+            scope: None,
+            state: Some(String::from("some_awesome_state")),
+        };
+        let login_enterprise_request = login::enterprise::RequestParamaters {
+            response_type: String::from("some_awesome_response_type"),
+            client_id: String::from("some_awesome_client_id"),
+            connection: None,
+            redirect_uri: String::from("some_awesome_redirect_uri"),
+            state: None,
         };
         let logout = RequestParameters {
             return_to: String::from("some_awesome_return"),
@@ -158,7 +173,7 @@ mod tests {
             access_token: String::from("some_awesome_access_token"),
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
-        let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
+        // let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
         let logout_parameters = logout::LogoutRequest::collect(logout);
         let passwordless_code_parameters = passwordless::PasswordlessRequest::collect(
             passwordless::RequestType::CodeOrLink(passwordless_code),
@@ -326,7 +341,9 @@ mod tests {
             token: String::from("some_awesome_token"),
         };
 
-        management.authorize(parameters);
+        management.authorize(login_social_request);
+        management.authorize(login_passive_request);
+        management.authorize(login_enterprise_request);
         management.logout(logout_parameters);
         management.passwordless_start(passwordless_code_parameters);
         management.passwordless_login(passwordless_login_parameters);
