@@ -109,7 +109,7 @@ mod tests {
             audience: None,
             scope: None,
         };
-        let signup = signup::RequestParameters {
+        let signup_parameters = signup::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
             email: String::from("some_awesome_email"),
             password: String::from("some_awesome_password"),
@@ -175,7 +175,6 @@ mod tests {
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
 
-        let signup_parameters = signup::SignupRequest::collect(signup);
         let change_password_parameters =
             change_password::ChangePasswordRequest::collect(change_password);
         let get_user_info = user_profile::UserProfileRequest::collect(user_profile);

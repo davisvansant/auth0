@@ -24,26 +24,15 @@ pub struct RequestParameters {
     pub user_metadata: Option<String>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct SignupRequest {
-    parameters: RequestParameters,
-}
-
-impl SignupRequest {
-    pub fn collect(parameters: RequestParameters) -> SignupRequest {
-        SignupRequest { parameters }
-    }
-}
-
 pub trait Signup {
-    fn signup(&self, parameters: SignupRequest) -> RequestBuilder;
+    fn signup(&self, request: RequestParameters) -> RequestBuilder;
 }
 
 impl Signup for Api {
-    fn signup(&self, request: SignupRequest) -> RequestBuilder {
+    fn signup(&self, request: RequestParameters) -> RequestBuilder {
         let client = reqwest::Client::new();
         let endpoint = String::from("/dbconnections/signup");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request.parameters)
+        client.post(url).json(&request)
     }
 }
