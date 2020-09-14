@@ -46,7 +46,7 @@ mod tests {
     use crate::login::Login;
     // use crate::login::Social;
     use crate::logout::Logout;
-    use crate::logout::RequestParameters;
+    // use crate::logout::RequestParameters;
     use crate::mfa::*;
     use crate::passwordless::*;
     use crate::revoke_refresh_token::*;
@@ -84,10 +84,10 @@ mod tests {
             redirect_uri: String::from("some_awesome_redirect_uri"),
             state: None,
         };
-        let logout = RequestParameters {
-            return_to: String::from("some_awesome_return"),
-            client_id: String::from("some_awesome_client_id"),
-            federated: String::from("some_awesome_federated"),
+        let logout_request = logout::RequestParameters {
+            return_to: Some(String::from("some_awesome_return")),
+            client_id: Some(String::from("some_awesome_client_id")),
+            federated: Some(String::from("some_awesome_federated")),
         };
         let passwordless_code = passwordless::CodeOrLink {
             client_id: String::from("some_awesome_client_id"),
@@ -173,8 +173,6 @@ mod tests {
             access_token: String::from("some_awesome_access_token"),
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
-        // let parameters = login::LoginRequest::collect(login::AuthenicationType::Social(social));
-        let logout_parameters = logout::LogoutRequest::collect(logout);
         let passwordless_code_parameters = passwordless::PasswordlessRequest::collect(
             passwordless::RequestType::CodeOrLink(passwordless_code),
         );
@@ -344,7 +342,8 @@ mod tests {
         management.authorize(login_social_request);
         management.authorize(login_passive_request);
         management.authorize(login_enterprise_request);
-        management.logout(logout_parameters);
+        // management.logout(logout_parameters);
+        management.logout(logout_request);
         management.passwordless_start(passwordless_code_parameters);
         management.passwordless_login(passwordless_login_parameters);
         management.signup(signup_parameters);

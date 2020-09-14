@@ -1,42 +1,27 @@
 use crate::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestParameters {
     #[serde(rename(serialize = "returnTo"))]
-    pub return_to: String,
-    pub client_id: String,
-    pub federated: String,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct LogoutRequest {
-    parameters: RequestParameters,
-}
-
-impl LogoutRequest {
-    pub fn collect(parameters: RequestParameters) -> LogoutRequest {
-        LogoutRequest { parameters }
-    }
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub return_to: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub client_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub federated: Option<String>,
 }
 
 pub trait Logout {
-    fn logout(&self, parameters: LogoutRequest) -> RequestBuilder;
+    fn logout(&self, request: RequestParameters) -> RequestBuilder;
 }
 
 impl Logout for Api {
-    fn logout(&self, logout_request: LogoutRequest) -> RequestBuilder {
+    fn logout(&self, request: RequestParameters) -> RequestBuilder {
         let client = reqwest::Client::new();
         let endpoint = String::from("/v2/logout");
         let url = self.base_url.join(&endpoint).unwrap();
-        let json = serde_json::to_value(logout_request.parameters).unwrap();
-        let mut parameters = BTreeMap::new();
-        let map = json.as_object().unwrap();
-        for (k, v) in map.iter() {
-            parameters.insert(k.as_str(), v.as_str().unwrap());
-        }
-        client.get(url).query(&parameters)
+        client.get(url).query(&request)
     }
 }
