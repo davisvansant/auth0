@@ -89,24 +89,25 @@ mod tests {
             client_id: Some(String::from("some_awesome_client_id")),
             federated: Some(String::from("some_awesome_federated")),
         };
-        let passwordless_code = passwordless::CodeOrLink {
+
+        let passwordless_start_parameters = passwordless::get_code_or_link::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
             client_secret: String::from("some_awesome_client_secret"),
             connection: String::from("some_awesome_connection"),
-            email: String::from("tester@awesome.com"),
-            phone_number: String::from("000000000"),
-            send: String::from("some_awesome_link_to_send"),
-            auth_params: String::from("some_awesome_auth_params"),
+            email: Some(String::from("tester@awesome.com")),
+            phone_number: None,
+            send: None,
+            auth_params: None,
         };
-        let passwordless_login = passwordless::AuthenticateUser {
+        let passwordless_login_parameters = passwordless::authenticate_user::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
             client_id: String::from("some_awesome_client_id"),
             client_secret: String::from("some_awesome_client_secret"),
             username: String::from("some_awesome_username"),
             realm: String::from("some_awesome_realm"),
             otp: String::from("some_awesome_otp"),
-            audience: String::from("some_awesome_audience"),
-            scope: String::from("some_awesome_scope"),
+            audience: None,
+            scope: None,
         };
         let signup = signup::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
@@ -173,12 +174,7 @@ mod tests {
             access_token: String::from("some_awesome_access_token"),
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
-        let passwordless_code_parameters = passwordless::PasswordlessRequest::collect(
-            passwordless::RequestType::CodeOrLink(passwordless_code),
-        );
-        let passwordless_login_parameters = passwordless::PasswordlessRequest::collect(
-            passwordless::RequestType::AuthenticateUser(passwordless_login),
-        );
+
         let signup_parameters = signup::SignupRequest::collect(signup);
         let change_password_parameters =
             change_password::ChangePasswordRequest::collect(change_password);
@@ -344,7 +340,7 @@ mod tests {
         management.authorize(login_enterprise_request);
         // management.logout(logout_parameters);
         management.logout(logout_request);
-        management.passwordless_start(passwordless_code_parameters);
+        management.passwordless_start(passwordless_start_parameters);
         management.passwordless_login(passwordless_login_parameters);
         management.signup(signup_parameters);
         management.change_password(change_password_parameters);
