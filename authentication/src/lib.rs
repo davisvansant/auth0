@@ -127,7 +127,7 @@ mod tests {
             email: String::from("some_awesome_email"),
             connection: String::from("some_awesome_database_connection"),
         };
-        let user_profile = user_profile::RequestParameters {
+        let user_profile_parameters = user_profile::RequestParameters {
             access_token: String::from("some_awesome_access_token"),
         };
         let challenge_request = ChallengeRequestParameters {
@@ -175,7 +175,6 @@ mod tests {
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
 
-        let get_user_info = user_profile::UserProfileRequest::collect(user_profile);
         let challenge_request_parameters = mfa::MultiFactorAuthenticationRequest::collect(
             mfa::RequestType::Challenge(challenge_request),
         );
@@ -341,7 +340,7 @@ mod tests {
         management.passwordless_login(passwordless_login_parameters);
         management.signup(signup_parameters);
         management.change_password(change_password_parameters);
-        management.userinfo(get_user_info);
+        management.user_info(user_profile_parameters);
         management.challenge_request(challenge_request_parameters);
         management.verify_with_otp(otp_request_parameters);
         management.verify_with_oob(oob_request_parameters);
