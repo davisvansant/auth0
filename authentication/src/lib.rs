@@ -122,7 +122,7 @@ mod tests {
             picture: None,
             user_metadata: None,
         };
-        let change_password = change_password::RequestParameters {
+        let change_password_parameters = change_password::RequestParameters {
             client_id: None,
             email: String::from("some_awesome_email"),
             connection: String::from("some_awesome_database_connection"),
@@ -175,8 +175,6 @@ mod tests {
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
 
-        let change_password_parameters =
-            change_password::ChangePasswordRequest::collect(change_password);
         let get_user_info = user_profile::UserProfileRequest::collect(user_profile);
         let challenge_request_parameters = mfa::MultiFactorAuthenticationRequest::collect(
             mfa::RequestType::Challenge(challenge_request),

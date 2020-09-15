@@ -10,26 +10,15 @@ pub struct RequestParameters {
     pub connection: String,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct ChangePasswordRequest {
-    parameters: RequestParameters,
-}
-
-impl ChangePasswordRequest {
-    pub fn collect(parameters: RequestParameters) -> ChangePasswordRequest {
-        ChangePasswordRequest { parameters }
-    }
-}
-
 pub trait ChangePassword {
-    fn change_password(&self, parameters: ChangePasswordRequest) -> RequestBuilder;
+    fn change_password(&self, request: RequestParameters) -> RequestBuilder;
 }
 
 impl ChangePassword for Api {
-    fn change_password(&self, request: ChangePasswordRequest) -> RequestBuilder {
+    fn change_password(&self, request: RequestParameters) -> RequestBuilder {
         let client = reqwest::Client::new();
         let endpoint = String::from("/dbconnections/change_password");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request.parameters)
+        client.post(url).json(&request)
     }
 }
