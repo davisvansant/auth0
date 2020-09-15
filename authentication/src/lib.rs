@@ -130,7 +130,7 @@ mod tests {
         let user_profile_parameters = user_profile::RequestParameters {
             access_token: String::from("some_awesome_access_token"),
         };
-        let challenge_request = ChallengeRequestParameters {
+        let mfa_challenge_request_parameters = mfa::challenge_request::RequestParameters {
             mfa_token: String::from("some_awesome_mfa_token"),
             client_id: String::from("some_awesome_client_id"),
             client_secret: None,
@@ -138,14 +138,14 @@ mod tests {
             oob_channel: None,
             authenticator_id: None,
         };
-        let otp_request = OTPRequestParameters {
+        let mfa_otp_request_parameters = mfa::one_time_password::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
             client_id: String::from("some_awesome_client_id"),
             client_secret: None,
             mfa_token: String::from("some_awesome_mfa_token"),
             otp: String::from("some_awesome_otp"),
         };
-        let oob_request = OOBRequestParameters {
+        let mfa_oob_request_parameters = mfa::out_of_band::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
             client_id: String::from("some_awesome_client_id"),
             client_secret: None,
@@ -153,41 +153,28 @@ mod tests {
             oob_code: String::from("some_awesome_otp"),
             binding_code: None,
         };
-        let recovery_code = RecoveryCodeRequestParameters {
+        let mfa_recovery_code_parameters = mfa::recovery_code::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
             client_id: String::from("some_awesome_client_id"),
             client_secret: None,
             mfa_token: String::from("some_awesome_mfa_token"),
             recovery_code: String::from("some_awesome_mfa_token"),
         };
-        let add_authenticator = AddAuthenticatorRequestParameters {
+        let mfa_add_authenticator_paramters = mfa::add_authenticator::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
             client_secret: None,
             authenticator_types: String::from("some_awesome_authenticator_type"),
             oob_channel: None,
             phone_number: None,
         };
-        let list_authenticators = ListAuthenticatorsRequestParameters {
+        let mfa_list_authenticators_parameters = mfa::list_authenticators::RequestParameters {
             access_token: String::from("some_awesome_access_token"),
         };
-        let delete_authenticator = DeleteAuthenticatorRequestParameters {
+        let mfa_delete_authenticator_parameters = mfa::delete_authenticator::RequestParameters {
             access_token: String::from("some_awesome_access_token"),
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
 
-        let challenge_request_parameters = mfa::MultiFactorAuthenticationRequest::collect(
-            mfa::RequestType::Challenge(challenge_request),
-        );
-        let otp_request_parameters =
-            mfa::MultiFactorAuthenticationRequest::collect(mfa::RequestType::OTP(otp_request));
-        let oob_request_parameters =
-            mfa::MultiFactorAuthenticationRequest::collect(mfa::RequestType::OOB(oob_request));
-        let recovery_code_parameters = mfa::MultiFactorAuthenticationRequest::collect(
-            mfa::RequestType::Recovery(recovery_code),
-        );
-        let add_authenticator_parameters = mfa::MultiFactorAuthenticationRequest::collect(
-            mfa::RequestType::AddAuthenticator(add_authenticator),
-        );
         let saml_accept_request = saml::AcceptRequestParameters {
             client_id: String::from("some_awesome_client_id"),
             connection: Some(String::from("some_awesome_connection")),
@@ -341,13 +328,13 @@ mod tests {
         management.signup(signup_parameters);
         management.change_password(change_password_parameters);
         management.user_info(user_profile_parameters);
-        management.challenge_request(challenge_request_parameters);
-        management.verify_with_otp(otp_request_parameters);
-        management.verify_with_oob(oob_request_parameters);
-        management.verify_with_recovery_code(recovery_code_parameters);
-        management.add_authenticator(add_authenticator_parameters);
-        management.list_authenticators(list_authenticators);
-        management.delete_authenticator(delete_authenticator);
+        management.challenge_request(mfa_challenge_request_parameters);
+        management.verify_with_otp(mfa_otp_request_parameters);
+        management.verify_with_oob(mfa_oob_request_parameters);
+        management.verify_with_recovery_code(mfa_recovery_code_parameters);
+        management.add_authenticator(mfa_add_authenticator_paramters);
+        management.list_authenticators(mfa_list_authenticators_parameters);
+        management.delete_authenticator(mfa_delete_authenticator_parameters);
         // management.accept_request(saml_accept_request);
         // management.get_metadata(saml_get_metadata);
         saml::SAML::accept_request(&management, saml_accept_request);
