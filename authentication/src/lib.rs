@@ -175,16 +175,15 @@ mod tests {
             authenticator_id: String::from("some_awesome_authenticator_id"),
         };
 
-        let saml_accept_request = saml::AcceptRequestParameters {
+        let saml_accept_request_parameters = saml::accept_request::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
             connection: Some(String::from("some_awesome_connection")),
-            // connection: None,
         };
-        let saml_get_metadata = saml::GetMetadataRequestParameters {
+        let saml_get_metadata_parameters = saml::get_metadata::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
         };
 
-        let saml_idp_flow = saml::IdPFlowRequestParameters {
+        let saml_idp_flow_parameters = saml::identity_provider::RequestParameters {
             connection: String::from("some_awesome_connection"),
             saml_response: String::from("some_awesome_saml_response"),
         };
@@ -337,9 +336,9 @@ mod tests {
         management.delete_authenticator(mfa_delete_authenticator_parameters);
         // management.accept_request(saml_accept_request);
         // management.get_metadata(saml_get_metadata);
-        saml::SAML::accept_request(&management, saml_accept_request);
-        saml::SAML::get_metadata(&management, saml_get_metadata);
-        management.idp_flow(saml_idp_flow);
+        saml::SAML::accept_request(&management, saml_accept_request_parameters);
+        saml::SAML::get_metadata(&management, saml_get_metadata_parameters);
+        management.idp_flow(saml_idp_flow_parameters);
         ws_federation::WSFederation::accept_request(&management, ws_federation_accept_request);
         ws_federation::WSFederation::get_metadata(&management);
         management.register(dynamic_client_registration_request);
