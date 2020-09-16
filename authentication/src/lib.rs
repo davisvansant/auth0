@@ -188,9 +188,9 @@ mod tests {
             saml_response: String::from("some_awesome_saml_response"),
         };
 
-        let ws_federation_accept_request = ws_federation::AcceptRequestParameters {
+        let ws_federation_accept_request = ws_federation::accept_request::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
-            wtrealm: None,
+            wtrealm: Some(String::from("some_awesome_wtrealm")),
             whr: None,
             wctx: None,
             wreply: None,
