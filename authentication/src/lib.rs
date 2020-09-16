@@ -240,7 +240,7 @@ mod tests {
             prompt: None,
         };
 
-        let get_device_code_parameters = device_code::RequestParamaters {
+        let get_device_code_parameters = device_code::RequestParameters {
             audience: Some(String::from("some_unique_api_id")),
             scope: Some(String::from("some_awesome_scope")),
             client_id: String::from("some_awesome_application_id"),

@@ -2,8 +2,11 @@ use crate::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
-pub struct RequestParamaters {
+#[derive(Serialize, Deserialize)]
+pub struct RequestParameters {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub audience: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub scope: Option<String>,
     pub client_id: String,
 }
@@ -19,28 +22,15 @@ pub struct ResponseValues {
 }
 
 pub trait GetDeviceCode {
-    fn device_authorization_flow(&self, request: RequestParamaters) -> RequestBuilder;
+    fn device_authorization_flow(&self, request: RequestParameters) -> RequestBuilder;
 }
 
 impl GetDeviceCode for Api {
-    fn device_authorization_flow(&self, request: RequestParamaters) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct QueryParameters {
-            #[serde(skip_serializing_if = "Option::is_none")]
-            audience: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            scope: Option<String>,
-            client_id: String,
-        }
-
+    fn device_authorization_flow(&self, request: RequestParameters) -> RequestBuilder {
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/device/code");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&QueryParameters {
-            audience: request.audience,
-            scope: request.scope,
-            client_id: request.client_id,
-        })
+        client.post(url).form(&request)
     }
 }
