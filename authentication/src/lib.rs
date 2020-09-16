@@ -202,8 +202,8 @@ mod tests {
             token_endpoint_auth_method: Some(String::from("some_awesome_auth_method")),
         };
 
-        let authorization_code_flow_request =
-            authorize_application::AuthorizationCodeFlowRequestParamaters {
+        let authorization_code_flow_parameters =
+            authorize_application::authorization_code_flow::RequestParameters {
                 audience: Some(String::from("some_awesome_audience")),
                 scope: Some(String::from("some_awesome_scope")),
                 response_type: String::from("some_awesome_response_type"),
@@ -214,8 +214,8 @@ mod tests {
                 prompt: None,
             };
 
-        let authorization_code_flow_with_pkce_request =
-            authorize_application::AuthorizationCodeFlowWithPKCERequestParamaters {
+        let authorization_code_flow_with_pkce_parameters =
+            authorize_application::authorization_code_flow_with_pkce::RequestParameters {
                 audience: Some(String::from("some_awesome_audience")),
                 scope: Some(String::from("some_awesome_scope")),
                 response_type: String::from("some_awesome_response_type"),
@@ -228,7 +228,7 @@ mod tests {
                 prompt: None,
             };
 
-        let implicit_flow_request = authorize_application::ImplicitFlowRequestParamaters {
+        let implicit_flow_parameters = authorize_application::implicit_flow::RequestParameters {
             audience: Some(String::from("some_awesome_audience")),
             scope: Some(String::from("some_awesome_scope")),
             response_type: String::from("some_awesome_response_type"),
@@ -345,14 +345,14 @@ mod tests {
         // management.authorization_code_flow(authorization_code_flow_request);
         authorize_application::AuthorizeApplication::authorization_code_flow(
             &management,
-            authorization_code_flow_request,
+            authorization_code_flow_parameters,
         );
         // management.authorization_code_flow_with_pkce(authorization_code_flow_with_pkce_request);
         authorize_application::AuthorizeApplication::authorization_code_flow_with_pkce(
             &management,
-            authorization_code_flow_with_pkce_request,
+            authorization_code_flow_with_pkce_parameters,
         );
-        management.implicit_flow(implicit_flow_request);
+        management.implicit_flow(implicit_flow_parameters);
         // management.device_authorization_flow(get_device_code_parameters);
         device_code::GetDeviceCode::device_authorization_flow(
             &management,
