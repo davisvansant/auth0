@@ -25,3 +25,28 @@ impl Logout for Api {
         client.get(url).query(&request)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn logout_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let logout = Api::init(base_url, authentication);
+        let parameters = logout::RequestParameters {
+            return_to: Some(String::from("some_awesome_return")),
+            client_id: Some(String::from("some_awesome_client_id")),
+            federated: Some(String::from("some_awesome_federated")),
+        };
+        let request = logout.logout(parameters).build().unwrap();
+        let test_url =
+            String::from("https://your_domain/v2/logout?returnTo=some_awesome_return&client_id=some_awesome_client_id&federated=some_awesome_federated");
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().is_empty(), true);
+        assert_eq!(request.body().is_none(), true);
+    }
+}
