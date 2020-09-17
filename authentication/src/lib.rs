@@ -247,7 +247,7 @@ mod tests {
         };
 
         let get_token_authorization_code_flow_parameters =
-            get_token::AuthorizationCodeFlowRequestParamaters {
+            get_token::authorization_code_flow::RequestParameters {
                 grant_type: String::from("some_awesome_grant"),
                 client_id: String::from("some_awesome_client_id"),
                 client_secret: String::from("some_awesome_client_secret"),
@@ -256,7 +256,7 @@ mod tests {
             };
 
         let get_token_authorization_code_flow_with_pkce_parameters =
-            get_token::AuthorizationCodeFlowWithPKCERequestParamaters {
+            get_token::authorization_code_flow_with_pkce::RequestParameters {
                 grant_type: String::from("some_awesome_grant"),
                 client_id: String::from("some_awesome_client_id"),
                 code: String::from("some_awesome_code"),
@@ -265,15 +265,15 @@ mod tests {
             };
 
         let get_token_client_credentials_flow_parameters =
-            get_token::ClientCredentialsFlowRequestParamaters {
+            get_token::client_credentials_flow::RequestParameters {
                 grant_type: String::from("some_awesome_grant_type"),
                 client_id: String::from("some_awesome_client_id"),
                 client_secret: String::from("some_awesome_client_secret"),
                 audience: String::from("some_awesome_audience_api"),
             };
 
-        let get_token_resource_owner_password_request =
-            get_token::ResourceOwnerPasswordRequestParamaters {
+        let get_token_resource_owner_password_parameters =
+            get_token::resource_owner_password::RequestParameters {
                 grant_type: String::from("some_awesome_grant_type"),
                 client_id: String::from("some_awesome_client_id"),
                 client_secret: None,
@@ -285,14 +285,14 @@ mod tests {
                 auth0_forwarded_for: Some(String::from("some_ip_address")),
             };
 
-        let get_token_device_authorization_flow_request =
-            get_token::DeviceAuthorizationFlowRequestParamaters {
+        let get_token_device_authorization_flow_parameters =
+            get_token::device_authorization_flow::RequestParameters {
                 grant_type: String::from("some_awesome_grant_type"),
                 client_id: String::from("some_awesome_client_id"),
                 device_code: String::from("some_awesome_device_code"),
             };
 
-        let get_token_refresh_token_request = get_token::RefreshTokenRequestParamaters {
+        let get_token_refresh_token_parameters = get_token::refresh_token::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
             client_id: String::from("some_awesome_client_id"),
             client_secret: None,
@@ -300,8 +300,8 @@ mod tests {
             scope: None,
         };
 
-        let get_token_token_exchange_for_native_social_request =
-            get_token::TokenExchangeForNativeSocialRequestParameters {
+        let get_token_token_exchange_for_native_social_parameters =
+            get_token::token_exchange_for_native_social::RequestParameters {
                 grant_type: String::from("some_awesome_grant_type"),
                 subject_token: String::from("some_awesome_subject_token"),
                 subject_token_type: String::from("some_awesome_subject_token_type"),
@@ -367,14 +367,15 @@ mod tests {
             get_token_authorization_code_flow_with_pkce_parameters,
         );
         management.client_credentials_flow(get_token_client_credentials_flow_parameters);
-        management.resource_owner_password(get_token_resource_owner_password_request);
+        management.resource_owner_password(get_token_resource_owner_password_parameters);
         get_token::GetToken::device_authorization_flow(
             &management,
-            get_token_device_authorization_flow_request,
+            get_token_device_authorization_flow_parameters,
         );
-        management.refresh_token(get_token_refresh_token_request);
-        management
-            .token_exchange_for_native_social(get_token_token_exchange_for_native_social_request);
+        management.refresh_token(get_token_refresh_token_parameters);
+        management.token_exchange_for_native_social(
+            get_token_token_exchange_for_native_social_parameters,
+        );
         management.revoke_refresh_token(revoke_refresh_token_revoke_request);
     }
 }

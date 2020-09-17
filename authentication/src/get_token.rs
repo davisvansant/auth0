@@ -1,209 +1,88 @@
 use crate::Api;
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use reqwest::RequestBuilder;
-use serde::{Deserialize, Serialize};
+pub use serde::{Deserialize, Serialize};
 
-pub struct AuthorizationCodeFlowRequestParamaters {
-    pub grant_type: String,
-    pub client_id: String,
-    pub client_secret: String,
-    pub code: String,
-    pub redirect_uri: Option<String>,
-}
-
-#[derive(Serialize, Deserialize)]
-pub struct AuthorizationCodeFlowResponseValues {
-    pub access_token: String,
-    pub refresh_token: String,
-    pub id_token: String,
-    pub token_type: String,
-    pub expires_in: String,
-}
-
-pub struct AuthorizationCodeFlowWithPKCERequestParamaters {
-    pub grant_type: String,
-    pub client_id: String,
-    pub code: String,
-    pub code_verifier: String,
-    pub redirect_uri: Option<String>,
-}
-
-pub struct ClientCredentialsFlowRequestParamaters {
-    pub grant_type: String,
-    pub client_id: String,
-    pub client_secret: String,
-    pub audience: String,
-}
-
-pub struct ResourceOwnerPasswordRequestParamaters {
-    pub grant_type: String,
-    pub client_id: String,
-    pub client_secret: Option<String>,
-    pub audience: Option<String>,
-    pub username: String,
-    pub password: String,
-    pub scope: Option<String>,
-    pub realm: Option<String>,
-    pub auth0_forwarded_for: Option<String>,
-}
-
-pub struct DeviceAuthorizationFlowRequestParamaters {
-    pub grant_type: String,
-    pub client_id: String,
-    pub device_code: String,
-}
-
-pub struct RefreshTokenRequestParamaters {
-    pub grant_type: String,
-    pub client_id: String,
-    pub client_secret: Option<String>,
-    pub refresh_token: String,
-    pub scope: Option<String>,
-}
-
-pub struct TokenExchangeForNativeSocialRequestParameters {
-    pub grant_type: String,
-    pub subject_token: String,
-    pub subject_token_type: String,
-    pub client_id: String,
-    pub audience: Option<String>,
-    pub scope: Option<String>,
-    pub auth0_forwarded_for: Option<String>,
-}
+pub mod authorization_code_flow;
+pub mod authorization_code_flow_with_pkce;
+pub mod client_credentials_flow;
+pub mod device_authorization_flow;
+pub mod refresh_token;
+pub mod resource_owner_password;
+pub mod token_exchange_for_native_social;
 
 pub trait GetToken {
     fn authorization_code_flow(
         &self,
-        request: AuthorizationCodeFlowRequestParamaters,
+        request: authorization_code_flow::RequestParameters,
     ) -> RequestBuilder;
 
     fn authorization_code_flow_with_pkce(
         &self,
-        request: AuthorizationCodeFlowWithPKCERequestParamaters,
+        request: authorization_code_flow_with_pkce::RequestParameters,
     ) -> RequestBuilder;
 
     fn client_credentials_flow(
         &self,
-        request: ClientCredentialsFlowRequestParamaters,
+        request: client_credentials_flow::RequestParameters,
     ) -> RequestBuilder;
 
     fn resource_owner_password(
         &self,
-        request: ResourceOwnerPasswordRequestParamaters,
+        request: resource_owner_password::RequestParameters,
     ) -> RequestBuilder;
 
     fn device_authorization_flow(
         &self,
-        request: DeviceAuthorizationFlowRequestParamaters,
+        request: device_authorization_flow::RequestParameters,
     ) -> RequestBuilder;
 
-    fn refresh_token(&self, request: RefreshTokenRequestParamaters) -> RequestBuilder;
+    fn refresh_token(&self, request: refresh_token::RequestParameters) -> RequestBuilder;
 
     fn token_exchange_for_native_social(
         &self,
-        request: TokenExchangeForNativeSocialRequestParameters,
+        request: token_exchange_for_native_social::RequestParameters,
     ) -> RequestBuilder;
 }
 
 impl GetToken for Api {
     fn authorization_code_flow(
         &self,
-        request: AuthorizationCodeFlowRequestParamaters,
+        request: authorization_code_flow::RequestParameters,
     ) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct QueryParameters {
-            pub grant_type: String,
-            pub client_id: String,
-            pub client_secret: String,
-            pub code: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            pub redirect_uri: Option<String>,
-        }
-
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&QueryParameters {
-            grant_type: request.grant_type,
-            client_id: request.client_id,
-            client_secret: request.client_secret,
-            code: request.code,
-            redirect_uri: request.redirect_uri,
-        })
+        client.post(url).form(&request)
     }
 
     fn authorization_code_flow_with_pkce(
         &self,
-        request: AuthorizationCodeFlowWithPKCERequestParamaters,
+        request: authorization_code_flow_with_pkce::RequestParameters,
     ) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct QueryParameters {
-            grant_type: String,
-            client_id: String,
-            code: String,
-            code_verifier: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            pub redirect_uri: Option<String>,
-        }
-
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&QueryParameters {
-            grant_type: request.grant_type,
-            client_id: request.client_id,
-            code: request.code,
-            code_verifier: request.code_verifier,
-            redirect_uri: request.redirect_uri,
-        })
+        client.post(url).form(&request)
     }
 
     fn client_credentials_flow(
         &self,
-        request: ClientCredentialsFlowRequestParamaters,
+        request: client_credentials_flow::RequestParameters,
     ) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct QueryParameters {
-            grant_type: String,
-            client_id: String,
-            client_secret: String,
-            audience: String,
-        }
-
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&QueryParameters {
-            grant_type: request.grant_type,
-            client_id: request.client_id,
-            client_secret: request.client_secret,
-            audience: request.audience,
-        })
+        client.post(url).form(&request)
     }
 
     fn resource_owner_password(
         &self,
-        request: ResourceOwnerPasswordRequestParamaters,
+        request: resource_owner_password::RequestParameters,
     ) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct QueryParameters {
-            grant_type: String,
-            client_id: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            client_secret: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            audience: Option<String>,
-            username: String,
-            password: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            scope: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            realm: Option<String>,
-        }
-
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
@@ -211,98 +90,40 @@ impl GetToken for Api {
         if request.auth0_forwarded_for.is_some() {
             let mut headers = HeaderMap::new();
             let header_key = String::from("auth0-forwarded-for");
-            let header_value = request.auth0_forwarded_for.unwrap();
+            let header_value = &request.auth0_forwarded_for.as_ref().unwrap();
             headers.insert(
                 HeaderName::from_bytes(header_key.as_bytes()).unwrap(),
                 HeaderValue::from_bytes(header_value.as_bytes()).unwrap(),
             );
-            client.post(url).headers(headers).form(&QueryParameters {
-                grant_type: request.grant_type,
-                client_id: request.client_id,
-                client_secret: request.client_secret,
-                audience: request.audience,
-                username: request.username,
-                password: request.password,
-                scope: request.scope,
-                realm: request.realm,
-            })
+            client.post(url).headers(headers).form(&request)
         } else {
-            client.post(url).form(&QueryParameters {
-                grant_type: request.grant_type,
-                client_id: request.client_id,
-                client_secret: request.client_secret,
-                audience: request.audience,
-                username: request.username,
-                password: request.password,
-                scope: request.scope,
-                realm: request.realm,
-            })
+            client.post(url).form(&request)
         }
     }
 
     fn device_authorization_flow(
         &self,
-        request: DeviceAuthorizationFlowRequestParamaters,
+        request: device_authorization_flow::RequestParameters,
     ) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct FormParameters {
-            pub grant_type: String,
-            pub client_id: String,
-            pub device_code: String,
-        }
-
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&FormParameters {
-            grant_type: request.grant_type,
-            client_id: request.client_id,
-            device_code: request.device_code,
-        })
+        client.post(url).form(&request)
     }
 
-    fn refresh_token(&self, request: RefreshTokenRequestParamaters) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct FormParameters {
-            pub grant_type: String,
-            pub client_id: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            pub client_secret: Option<String>,
-            pub refresh_token: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            pub scope: Option<String>,
-        }
-
+    fn refresh_token(&self, request: refresh_token::RequestParameters) -> RequestBuilder {
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&FormParameters {
-            grant_type: request.grant_type,
-            client_id: request.client_id,
-            client_secret: request.client_secret,
-            refresh_token: request.refresh_token,
-            scope: request.scope,
-        })
+        client.post(url).form(&request)
     }
 
     fn token_exchange_for_native_social(
         &self,
-        request: TokenExchangeForNativeSocialRequestParameters,
+        request: token_exchange_for_native_social::RequestParameters,
     ) -> RequestBuilder {
-        #[derive(Serialize, Deserialize)]
-        struct FormParameters {
-            pub grant_type: String,
-            pub subject_token: String,
-            pub subject_token_type: String,
-            pub client_id: String,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            pub audience: Option<String>,
-            #[serde(skip_serializing_if = "Option::is_none")]
-            pub scope: Option<String>,
-        }
-
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
@@ -310,28 +131,14 @@ impl GetToken for Api {
         if request.auth0_forwarded_for.is_some() {
             let mut headers = HeaderMap::new();
             let header_key = String::from("auth0-forwarded-for");
-            let header_value = request.auth0_forwarded_for.unwrap();
+            let header_value = &request.auth0_forwarded_for.as_ref().unwrap();
             headers.insert(
                 HeaderName::from_bytes(header_key.as_bytes()).unwrap(),
                 HeaderValue::from_bytes(header_value.as_bytes()).unwrap(),
             );
-            client.post(url).headers(headers).form(&FormParameters {
-                grant_type: request.grant_type,
-                subject_token: request.subject_token,
-                subject_token_type: request.subject_token_type,
-                client_id: request.client_id,
-                audience: request.audience,
-                scope: request.scope,
-            })
+            client.post(url).headers(headers).form(&request)
         } else {
-            client.post(url).form(&FormParameters {
-                grant_type: request.grant_type,
-                subject_token: request.subject_token,
-                subject_token_type: request.subject_token_type,
-                client_id: request.client_id,
-                audience: request.audience,
-                scope: request.scope,
-            })
+            client.post(url).form(&request)
         }
     }
 }
