@@ -36,3 +36,46 @@ impl Signup for Api {
         client.post(url).json(&request)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn signup_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let signup = Api::init(base_url, authentication);
+        let parameters = signup::RequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            email: String::from("some_awesome_email"),
+            password: String::from("some_awesome_password"),
+            connection: String::from("some_awesome_connection"),
+            username: Some(String::from("some_awesome_username")),
+            given_name: None,
+            family_name: None,
+            name: None,
+            nickname: None,
+            picture: None,
+            user_metadata: None,
+        };
+        let request = signup.signup(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/dbconnections/signup");
+        let test_body = String::from(
+            "{\"client_id\":\"some_awesome_client_id\",\
+            \"email\":\"some_awesome_email\",\
+            \"password\":\"some_awesome_password\",\
+            \"connection\":\"some_awesome_connection\",\
+            \"username\":\"some_awesome_username\"}",
+        );
+
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+}
