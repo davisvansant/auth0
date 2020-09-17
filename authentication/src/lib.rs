@@ -60,7 +60,7 @@ mod tests {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let management = Api::init(base_url, authentication);
-        let login_social_request = login::social::RequestParamaters {
+        let login_social_request = login::social::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
             client_id: String::from("some_awesome_client_id"),
             connection: None,
@@ -69,7 +69,7 @@ mod tests {
             additional_parameters: None,
         };
 
-        let login_passive_request = login::passive::RequestParamaters {
+        let login_passive_request = login::passive::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
             client_id: String::from("some_awesome_client_id"),
             connection: None,
@@ -77,7 +77,7 @@ mod tests {
             scope: None,
             state: Some(String::from("some_awesome_state")),
         };
-        let login_enterprise_request = login::enterprise::RequestParamaters {
+        let login_enterprise_request = login::enterprise::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
             client_id: String::from("some_awesome_client_id"),
             connection: None,

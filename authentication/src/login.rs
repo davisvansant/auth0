@@ -29,7 +29,7 @@ mod tests {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
-        let parameters = login::enterprise::RequestParamaters {
+        let parameters = login::enterprise::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
             client_id: String::from("some_awesome_client_id"),
             connection: None,
@@ -50,7 +50,7 @@ mod tests {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
-        let parameters = login::passive::RequestParamaters {
+        let parameters = login::passive::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
             client_id: String::from("some_awesome_client_id"),
             connection: None,
@@ -72,7 +72,7 @@ mod tests {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
-        let parameters = login::social::RequestParamaters {
+        let parameters = login::social::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
             client_id: String::from("some_awesome_client_id"),
             connection: None,

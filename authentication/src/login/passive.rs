@@ -1,7 +1,7 @@
 use crate::login::*;
 
 #[derive(Serialize, Deserialize)]
-pub struct RequestParamaters {
+pub struct RequestParameters {
     pub response_type: String,
     pub client_id: String,
     #[serde(skip_serializing_if = "Option::is_none")]
