@@ -41,7 +41,7 @@ impl MultiFactorAuthentication for Api {
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request)
+        client.post(url).form(&request)
     }
     fn verify_with_oob(&self, request: out_of_band::RequestParameters) -> RequestBuilder {
         let client = reqwest::Client::new();
@@ -120,6 +120,35 @@ mod tests {
         let test_body = String::from(
             "{\"mfa_token\":\"some_awesome_mfa_token\",\
             \"client_id\":\"some_awesome_client_id\"}",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn one_time_password_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let mfa = Api::init(base_url, authentication);
+        let parameters = mfa::one_time_password::RequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            mfa_token: String::from("some_awesome_mfa_token"),
+            otp: String::from("some_awesome_otp"),
+        };
+        let request = mfa.verify_with_otp(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant_type&\
+            client_id=some_awesome_client_id&\
+            mfa_token=some_awesome_mfa_token&\
+            otp=some_awesome_otp",
         );
         assert_eq!(request.method().as_str(), reqwest::Method::POST);
         assert_eq!(request.url().as_str(), test_url);
