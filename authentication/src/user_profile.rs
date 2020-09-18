@@ -26,3 +26,33 @@ impl UserInfo for Api {
         client.get(url).headers(headers)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn get_user_info_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let user_profile = Api::init(base_url, authentication);
+        let parameters = user_profile::RequestParameters {
+            access_token: String::from("some_awesome_access_token"),
+        };
+        let request = user_profile.user_info(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/userinfo");
+
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert!(request
+            .headers()
+            .contains_key(reqwest::header::AUTHORIZATION));
+        assert_eq!(
+            request.headers()[reqwest::header::AUTHORIZATION],
+            "Bearer some_awesome_access_token",
+        );
+        assert_eq!(request.body().is_none(), true);
+    }
+}
