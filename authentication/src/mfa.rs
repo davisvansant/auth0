@@ -96,3 +96,37 @@ impl MultiFactorAuthentication for Api {
         client.delete(url).headers(headers)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn challenge_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let mfa = Api::init(base_url, authentication);
+        let parameters = mfa::challenge_request::RequestParameters {
+            mfa_token: String::from("some_awesome_mfa_token"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            challenge_type: None,
+            oob_channel: None,
+            authenticator_id: None,
+        };
+        let request = mfa.challenge_request(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/mfa/challenge");
+        let test_body = String::from(
+            "{\"mfa_token\":\"some_awesome_mfa_token\",\
+            \"client_id\":\"some_awesome_client_id\"}",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+}
