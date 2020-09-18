@@ -47,7 +47,7 @@ impl MultiFactorAuthentication for Api {
         let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request)
+        client.post(url).form(&request)
     }
     fn verify_with_recovery_code(
         &self,
@@ -149,6 +149,36 @@ mod tests {
             client_id=some_awesome_client_id&\
             mfa_token=some_awesome_mfa_token&\
             otp=some_awesome_otp",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn out_of_band_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let mfa = Api::init(base_url, authentication);
+        let parameters = mfa::out_of_band::RequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            mfa_token: String::from("some_awesome_mfa_token"),
+            oob_code: String::from("some_awesome_oob_code"),
+            binding_code: None,
+        };
+        let request = mfa.verify_with_oob(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant_type&\
+            client_id=some_awesome_client_id&\
+            mfa_token=some_awesome_mfa_token&\
+            oob_code=some_awesome_oob_code",
         );
         assert_eq!(request.method().as_str(), reqwest::Method::POST);
         assert_eq!(request.url().as_str(), test_url);
