@@ -217,4 +217,31 @@ mod tests {
             test_body.as_bytes(),
         );
     }
+
+    #[test]
+    fn add_authenticator_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let mfa = Api::init(base_url, authentication);
+        let parameters = mfa::add_authenticator::RequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            authenticator_types: String::from("some_awesome_authenticator_type"),
+            oob_channel: None,
+            phone_number: None,
+        };
+        let request = mfa.add_authenticator(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/mfa/associate");
+        let test_body = String::from(
+            "{\"client_id\":\"some_awesome_client_id\",\
+            \"authenticator_types\":\"some_awesome_authenticator_type\"}",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
 }
