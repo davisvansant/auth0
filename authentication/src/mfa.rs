@@ -89,14 +89,19 @@ impl MultiFactorAuthentication for Api {
         request: delete_authenticator::RequestParameters,
     ) -> RequestBuilder {
         let client = reqwest::Client::new();
-        let endpoint = String::from("/mfa/authenticators");
+        let endpoint = String::from("/mfa/authenticators/");
         let base_url = self.base_url.join(&endpoint).unwrap();
         let url = base_url.join(&request.authenticator_id).unwrap();
         let mut headers = HeaderMap::new();
         let auth_value = format!("Bearer {}", &request.access_token);
+        let json_header = String::from("application/json");
         headers.insert(
             reqwest::header::AUTHORIZATION,
             HeaderValue::from_str(&auth_value).unwrap(),
+        );
+        headers.insert(
+            reqwest::header::CONTENT_TYPE,
+            HeaderValue::from_str(&json_header).unwrap(),
         );
         client.delete(url).headers(headers)
     }
@@ -261,6 +266,24 @@ mod tests {
         let request = mfa.list_authenticators(parameters).build().unwrap();
         let test_url = String::from("https://your_domain/mfa/authenticators");
         assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 2);
+        assert_eq!(request.body().is_none(), true);
+    }
+
+    #[test]
+    fn delete_authenticator_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let mfa = Api::init(base_url, authentication);
+        let parameters = mfa::delete_authenticator::RequestParameters {
+            access_token: String::from("some_awesome_access_token"),
+            authenticator_id: String::from("some_awesome_authenticator_id"),
+        };
+        let request = mfa.delete_authenticator(parameters).build().unwrap();
+        let test_url =
+            String::from("https://your_domain/mfa/authenticators/some_awesome_authenticator_id");
+        assert_eq!(request.method().as_str(), reqwest::Method::DELETE);
         assert_eq!(request.url().as_str(), test_url);
         assert_eq!(request.headers().len(), 2);
         assert_eq!(request.body().is_none(), true);
