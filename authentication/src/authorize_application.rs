@@ -3,8 +3,8 @@ use reqwest::RequestBuilder;
 pub use serde::{Deserialize, Serialize};
 
 pub mod authorization_code_flow;
-pub mod authorization_code_flow_with_pkce;
 pub mod implicit_flow;
+pub mod pkce;
 
 pub trait AuthorizeApplication {
     fn authorization_code_flow(
@@ -12,10 +12,8 @@ pub trait AuthorizeApplication {
         request: authorization_code_flow::RequestParameters,
     ) -> RequestBuilder;
 
-    fn authorization_code_flow_with_pkce(
-        &self,
-        request: authorization_code_flow_with_pkce::RequestParameters,
-    ) -> RequestBuilder;
+    fn authorization_code_flow_with_pkce(&self, request: pkce::RequestParameters)
+        -> RequestBuilder;
 
     fn implicit_flow(&self, request: implicit_flow::RequestParameters) -> RequestBuilder;
 }
@@ -34,7 +32,7 @@ impl AuthorizeApplication for Api {
 
     fn authorization_code_flow_with_pkce(
         &self,
-        request: authorization_code_flow_with_pkce::RequestParameters,
+        request: pkce::RequestParameters,
     ) -> RequestBuilder {
         let client = reqwest::Client::new();
         let endpoint = String::from("/authorize");

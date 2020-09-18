@@ -215,7 +215,7 @@ mod tests {
             };
 
         let authorization_code_flow_with_pkce_parameters =
-            authorize_application::authorization_code_flow_with_pkce::RequestParameters {
+            authorize_application::pkce::RequestParameters {
                 audience: Some(String::from("some_awesome_audience")),
                 scope: Some(String::from("some_awesome_scope")),
                 response_type: String::from("some_awesome_response_type"),
