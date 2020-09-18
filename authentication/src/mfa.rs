@@ -73,9 +73,14 @@ impl MultiFactorAuthentication for Api {
         let url = self.base_url.join(&endpoint).unwrap();
         let mut headers = HeaderMap::new();
         let auth_value = format!("Bearer {}", &request.access_token);
+        let json_header = String::from("application/json");
         headers.insert(
             reqwest::header::AUTHORIZATION,
             HeaderValue::from_str(&auth_value).unwrap(),
+        );
+        headers.insert(
+            reqwest::header::CONTENT_TYPE,
+            HeaderValue::from_str(&json_header).unwrap(),
         );
         client.get(url).headers(headers)
     }
@@ -243,5 +248,21 @@ mod tests {
             request.body().unwrap().as_bytes().unwrap(),
             test_body.as_bytes(),
         );
+    }
+
+    #[test]
+    fn list_authenticators_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let mfa = Api::init(base_url, authentication);
+        let parameters = mfa::list_authenticators::RequestParameters {
+            access_token: String::from("some_awesome_access_token"),
+        };
+        let request = mfa.list_authenticators(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/mfa/authenticators");
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 2);
+        assert_eq!(request.body().is_none(), true);
     }
 }
