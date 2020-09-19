@@ -24,3 +24,38 @@ impl DynamicClientRegistration for Api {
         client.post(url).json(&request)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn register_client_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let dynamic_client_registration = Api::init(base_url, authentication);
+        let parameters = dynamic_client_registration::RequestParameters {
+            client_name: Some(String::from("some_awesome_client_name")),
+            redirect_uris: vec![String::from("some_awesome_uri")],
+            token_endpoint_auth_method: Some(String::from("some_awesome_auth_method")),
+        };
+        let request = dynamic_client_registration
+            .register(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oidc/register");
+        let test_body = String::from(
+            "{\"client_name\":\"some_awesome_client_name\",\
+            \"redirect_uris\":[\"some_awesome_uri\"],\
+            \"token_endpoint_auth_method\":\"some_awesome_auth_method\"}",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+}
