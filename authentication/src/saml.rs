@@ -36,7 +36,7 @@ impl SAML for Api {
         let endpoint = String::from("/login/callback");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).query(&request)
+        client.post(url).form(&request)
     }
 }
 
@@ -80,5 +80,29 @@ mod tests {
         assert_eq!(request.url().as_str(), test_url);
         assert_eq!(request.headers().len(), 0);
         assert_eq!(request.body().is_none(), true);
+    }
+
+    #[test]
+    fn idp_flow_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let saml = Api::init(base_url, authentication);
+        let parameters = saml::identity_provider::RequestParameters {
+            connection: String::from("some_awesome_connection"),
+            saml_response: String::from("some_awesome_saml_response"),
+        };
+        let request = saml.idp_flow(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/login/callback");
+        let test_body = String::from(
+            "connection=some_awesome_connection&\
+            SAMLResponse=some_awesome_saml_response",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
     }
 }
