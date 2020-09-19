@@ -65,4 +65,20 @@ mod tests {
             test_body.as_bytes(),
         );
     }
+
+    #[test]
+    fn get_metadata_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let saml = Api::init(base_url, authentication);
+        let parameters = saml::get_metadata::RequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+        };
+        let request = saml.get_metadata(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/samlp/metadata/some_awesome_client_id");
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 0);
+        assert_eq!(request.body().is_none(), true);
+    }
 }
