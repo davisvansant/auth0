@@ -19,7 +19,7 @@ impl SAML for Api {
         let base_url = self.base_url.join(&endpoint).unwrap();
         let url = base_url.join(&request.client_id).unwrap();
 
-        client.get(url).query(&request.connection)
+        client.get(url).form(&request)
     }
 
     fn get_metadata(&self, request: get_metadata::RequestParameters) -> RequestBuilder {
@@ -37,5 +37,32 @@ impl SAML for Api {
         let url = self.base_url.join(&endpoint).unwrap();
 
         client.post(url).query(&request)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn accept_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let saml = Api::init(base_url, authentication);
+        let parameters = saml::accept_request::RequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            connection: Some(String::from("some_awesome_connection")),
+        };
+        let request = saml.accept_request(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/samlp/some_awesome_client_id");
+        let test_body = String::from("connection=some_awesome_connection");
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
     }
 }
