@@ -34,3 +34,38 @@ impl GetDeviceCode for Api {
         client.post(url).form(&request)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn device_authorization_flow_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let device_code = Api::init(base_url, authentication);
+        let parameters = device_code::RequestParameters {
+            audience: Some(String::from("some_unique_api_id")),
+            scope: Some(String::from("some_awesome_scope")),
+            client_id: String::from("some_awesome_application_id"),
+        };
+        let request = device_code
+            .device_authorization_flow(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/device/code");
+        let test_body = String::from(
+            "audience=some_unique_api_id&\
+            scope=some_awesome_scope&\
+            client_id=some_awesome_application_id",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+}
