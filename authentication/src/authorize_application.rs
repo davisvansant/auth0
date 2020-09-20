@@ -49,3 +49,113 @@ impl AuthorizeApplication for Api {
         client.get(url).query(&request)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn authorization_code_flow_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authorize_application = Api::init(base_url, authentication);
+        let parameters = authorize_application::authorization_code_flow::RequestParameters {
+            audience: Some(String::from("some_awesome_audience")),
+            scope: Some(String::from("some_awesome_scope")),
+            response_type: String::from("some_awesome_response_type"),
+            client_id: String::from("some_awesome_client_id"),
+            state: Some(String::from("some_awesome_state")),
+            redirect_uri: None,
+            connection: None,
+            prompt: None,
+        };
+        let request = authorize_application
+            .authorization_code_flow(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from(
+            "https://your_domain/authorize?\
+            audience=some_awesome_audience&\
+            scope=some_awesome_scope&\
+            response_type=some_awesome_response_type&\
+            client_id=some_awesome_client_id&\
+            state=some_awesome_state",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().is_empty(), true);
+        assert_eq!(request.body().is_none(), true);
+    }
+
+    #[test]
+    fn authorization_code_flow_with_pkce_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authorize_application = Api::init(base_url, authentication);
+        let parameters = authorize_application::pkce::RequestParameters {
+            audience: Some(String::from("some_awesome_audience")),
+            scope: Some(String::from("some_awesome_scope")),
+            response_type: String::from("some_awesome_response_type"),
+            client_id: String::from("some_awesome_client_id"),
+            state: Some(String::from("some_awesome_state")),
+            redirect_uri: None,
+            code_challenge_method: String::from("some_awesome_code_challenege_method"),
+            code_challenge: String::from("some_awesome_code_challenge"),
+            connection: None,
+            prompt: None,
+        };
+        let request = authorize_application
+            .authorization_code_flow_with_pkce(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from(
+            "https://your_domain/authorize?\
+            audience=some_awesome_audience&\
+            scope=some_awesome_scope&\
+            response_type=some_awesome_response_type&\
+            client_id=some_awesome_client_id&\
+            state=some_awesome_state&\
+            code_challenge_method=some_awesome_code_challenege_method&\
+            code_challenge=some_awesome_code_challenge",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().is_empty(), true);
+        assert_eq!(request.body().is_none(), true);
+    }
+
+    #[test]
+    fn implicit_flow_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authorize_application = Api::init(base_url, authentication);
+        let parameters = authorize_application::implicit_flow::RequestParameters {
+            audience: Some(String::from("some_awesome_audience")),
+            scope: Some(String::from("some_awesome_scope")),
+            response_type: String::from("some_awesome_response_type"),
+            client_id: String::from("some_awesome_client_id"),
+            state: Some(String::from("some_awesome_state")),
+            redirect_uri: None,
+            nonce: None,
+            connection: None,
+            prompt: None,
+        };
+        let request = authorize_application
+            .implicit_flow(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from(
+            "https://your_domain/authorize?\
+            audience=some_awesome_audience&\
+            scope=some_awesome_scope&\
+            response_type=some_awesome_response_type&\
+            client_id=some_awesome_client_id&\
+            state=some_awesome_state",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::GET);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().is_empty(), true);
+        assert_eq!(request.body().is_none(), true);
+    }
+}
