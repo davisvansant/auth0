@@ -142,3 +142,232 @@ impl GetToken for Api {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn authorization_code_flow_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let get_token = Api::init(base_url, authentication);
+        let parameters = get_token::authorization_code_flow::RequestParameters {
+            grant_type: String::from("some_awesome_grant"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: String::from("some_awesome_client_secret"),
+            code: String::from("some_awesome_code"),
+            redirect_uri: None,
+        };
+        let request = get_token
+            .authorization_code_flow(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant&\
+            client_id=some_awesome_client_id&\
+            client_secret=some_awesome_client_secret&\
+            code=some_awesome_code",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn authorization_code_flow_with_pkce_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let get_token = Api::init(base_url, authentication);
+        let parameters = get_token::authorization_code_flow_with_pkce::RequestParameters {
+            grant_type: String::from("some_awesome_grant"),
+            client_id: String::from("some_awesome_client_id"),
+            code: String::from("some_awesome_code"),
+            code_verifier: String::from("some_awesome_code_verifier"),
+            redirect_uri: None,
+        };
+        let request = get_token
+            .authorization_code_flow_with_pkce(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant&\
+            client_id=some_awesome_client_id&\
+            code=some_awesome_code&\
+            code_verifier=some_awesome_code_verifier",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn client_credentials_flow_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let get_token = Api::init(base_url, authentication);
+        let parameters = get_token::client_credentials_flow::RequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: String::from("some_awesome_client_secret"),
+            audience: String::from("some_awesome_audience_api"),
+        };
+        let request = get_token
+            .client_credentials_flow(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant_type&\
+            client_id=some_awesome_client_id&\
+            client_secret=some_awesome_client_secret&\
+            audience=some_awesome_audience_api",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn resource_owner_password_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let get_token = Api::init(base_url, authentication);
+        let parameters = get_token::resource_owner_password::RequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            audience: None,
+            username: String::from("some_awesome_username"),
+            password: String::from("some_awesome_password"),
+            scope: None,
+            realm: None,
+            auth0_forwarded_for: Some(String::from("some_ip_address")),
+        };
+        let request = get_token
+            .resource_owner_password(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant_type&\
+            client_id=some_awesome_client_id&\
+            username=some_awesome_username&\
+            password=some_awesome_password&\
+            auth0_forwarded_for=some_ip_address",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 2);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn device_authorization_flow_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let get_token = Api::init(base_url, authentication);
+        let parameters = get_token::device_authorization_flow::RequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            device_code: String::from("some_awesome_device_code"),
+        };
+        let request = get_token
+            .device_authorization_flow(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant_type&\
+            client_id=some_awesome_client_id&\
+            device_code=some_awesome_device_code",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn refresh_token_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let get_token = Api::init(base_url, authentication);
+        let parameters = get_token::refresh_token::RequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: None,
+            refresh_token: String::from("some_awesome_refresh_token"),
+            scope: None,
+        };
+        let request = get_token.refresh_token(parameters).build().unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant_type&\
+            client_id=some_awesome_client_id&\
+            refresh_token=some_awesome_refresh_token",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+
+    #[test]
+    fn token_exchange_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let get_token = Api::init(base_url, authentication);
+        let parameters = get_token::token_exchange_for_native_social::RequestParameters {
+            grant_type: String::from("some_awesome_grant_type"),
+            subject_token: String::from("some_awesome_subject_token"),
+            subject_token_type: String::from("some_awesome_subject_token_type"),
+            client_id: String::from("some_awesome_client_id"),
+            audience: None,
+            scope: None,
+            auth0_forwarded_for: None,
+        };
+        let request = get_token
+            .token_exchange_for_native_social(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/token");
+        let test_body = String::from(
+            "grant_type=some_awesome_grant_type&\
+            subject_token=some_awesome_subject_token&\
+            subject_token_type=some_awesome_subject_token_type&\
+            client_id=some_awesome_client_id",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+}
