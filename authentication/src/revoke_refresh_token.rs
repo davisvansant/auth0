@@ -23,3 +23,38 @@ impl RevokeRequestToken for Api {
         client.post(url).json(&request)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::*;
+
+    #[test]
+    fn revoke_refresh_token_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let revoke_refresh_token = Api::init(base_url, authentication);
+        let parameters = revoke_refresh_token::RequestParameters {
+            client_id: String::from("some_awesome_client_id"),
+            client_secret: Some(String::from("some_awesome_client_secret")),
+            token: String::from("some_awesome_token"),
+        };
+        let request = revoke_refresh_token
+            .revoke_refresh_token(parameters)
+            .build()
+            .unwrap();
+        let test_url = String::from("https://your_domain/oauth/revoke");
+        let test_body = String::from(
+            "{\"client_id\":\"some_awesome_client_id\",\
+            \"client_secret\":\"some_awesome_client_secret\",\
+            \"token\":\"some_awesome_token\"}",
+        );
+        assert_eq!(request.method().as_str(), reqwest::Method::POST);
+        assert_eq!(request.url().as_str(), test_url);
+        assert_eq!(request.headers().len(), 1);
+        assert_eq!(
+            request.body().unwrap().as_bytes().unwrap(),
+            test_body.as_bytes(),
+        );
+    }
+}
