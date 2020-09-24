@@ -14,7 +14,6 @@ pub trait UserInfo {
 
 impl UserInfo for Api {
     fn user_info(&self, request: RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/userinfo");
         let url = self.base_url.join(&endpoint).unwrap();
         let mut headers = HeaderMap::new();
@@ -23,7 +22,7 @@ impl UserInfo for Api {
             reqwest::header::AUTHORIZATION,
             HeaderValue::from_str(&auth_value).unwrap(),
         );
-        client.get(url).headers(headers)
+        self.client.get(url).headers(headers)
     }
 }
 
