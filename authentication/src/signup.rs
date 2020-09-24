@@ -30,10 +30,9 @@ pub trait Signup {
 
 impl Signup for Api {
     fn signup(&self, request: RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/dbconnections/signup");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request)
+        self.client.post(url).json(&request)
     }
 }
 
