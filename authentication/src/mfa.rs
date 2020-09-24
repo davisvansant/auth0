@@ -32,43 +32,37 @@ pub trait MultiFactorAuthentication {
 
 impl MultiFactorAuthentication for Api {
     fn challenge_request(&self, request: challenge_request::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/mfa/challenge");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request)
+        self.client.post(url).json(&request)
     }
     fn verify_with_otp(&self, request: one_time_password::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
     fn verify_with_oob(&self, request: out_of_band::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
     fn verify_with_recovery_code(
         &self,
         request: recovery_code::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
     fn add_authenticator(&self, request: add_authenticator::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/mfa/associate");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request)
+        self.client.post(url).json(&request)
     }
     fn list_authenticators(
         &self,
         request: list_authenticators::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/mfa/authenticators");
         let url = self.base_url.join(&endpoint).unwrap();
         let mut headers = HeaderMap::new();
@@ -82,13 +76,12 @@ impl MultiFactorAuthentication for Api {
             reqwest::header::CONTENT_TYPE,
             HeaderValue::from_str(&json_header).unwrap(),
         );
-        client.get(url).headers(headers)
+        self.client.get(url).headers(headers)
     }
     fn delete_authenticator(
         &self,
         request: delete_authenticator::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/mfa/authenticators/");
         let base_url = self.base_url.join(&endpoint).unwrap();
         let url = base_url.join(&request.authenticator_id).unwrap();
@@ -103,7 +96,7 @@ impl MultiFactorAuthentication for Api {
             reqwest::header::CONTENT_TYPE,
             HeaderValue::from_str(&json_header).unwrap(),
         );
-        client.delete(url).headers(headers)
+        self.client.delete(url).headers(headers)
     }
 }
 
