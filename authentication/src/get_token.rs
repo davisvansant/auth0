@@ -50,40 +50,36 @@ impl GetToken for Api {
         &self,
         request: authorization_code_flow::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
 
     fn authorization_code_flow_with_pkce(
         &self,
         request: authorization_code_flow_with_pkce::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
 
     fn client_credentials_flow(
         &self,
         request: client_credentials_flow::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
 
     fn resource_owner_password(
         &self,
         request: resource_owner_password::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
@@ -95,9 +91,9 @@ impl GetToken for Api {
                 HeaderName::from_bytes(header_key.as_bytes()).unwrap(),
                 HeaderValue::from_bytes(header_value.as_bytes()).unwrap(),
             );
-            client.post(url).headers(headers).form(&request)
+            self.client.post(url).headers(headers).form(&request)
         } else {
-            client.post(url).form(&request)
+            self.client.post(url).form(&request)
         }
     }
 
@@ -105,26 +101,23 @@ impl GetToken for Api {
         &self,
         request: device_authorization_flow::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
 
     fn refresh_token(&self, request: refresh_token::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
 
     fn token_exchange_for_native_social(
         &self,
         request: token_exchange_for_native_social::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/token");
         let url = self.base_url.join(&endpoint).unwrap();
 
@@ -136,9 +129,9 @@ impl GetToken for Api {
                 HeaderName::from_bytes(header_key.as_bytes()).unwrap(),
                 HeaderValue::from_bytes(header_value.as_bytes()).unwrap(),
             );
-            client.post(url).headers(headers).form(&request)
+            self.client.post(url).headers(headers).form(&request)
         } else {
-            client.post(url).form(&request)
+            self.client.post(url).form(&request)
         }
     }
 }
