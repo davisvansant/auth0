@@ -23,30 +23,27 @@ impl AuthorizeApplication for Api {
         &self,
         request: authorization_code_flow::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/authorize");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.get(url).query(&request)
+        self.client.get(url).query(&request)
     }
 
     fn authorization_code_flow_with_pkce(
         &self,
         request: pkce::RequestParameters,
     ) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/authorize");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.get(url).query(&request)
+        self.client.get(url).query(&request)
     }
 
     fn implicit_flow(&self, request: implicit_flow::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/authorize");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.get(url).query(&request)
+        self.client.get(url).query(&request)
     }
 }
 
