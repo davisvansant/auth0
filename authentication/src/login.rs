@@ -12,10 +12,9 @@ pub trait Login {
 
 impl Login for Api {
     fn authorize<T: Serialize>(&self, request: T) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/authorize");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.get(url).query(&request)
+        self.client.get(url).query(&request)
     }
 }
 
