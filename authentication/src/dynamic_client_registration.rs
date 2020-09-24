@@ -17,11 +17,10 @@ pub trait DynamicClientRegistration {
 
 impl DynamicClientRegistration for Api {
     fn register(&self, request: RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oidc/register");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).json(&request)
+        self.client.post(url).json(&request)
     }
 }
 
