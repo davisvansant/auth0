@@ -14,29 +14,26 @@ pub trait SAML {
 
 impl SAML for Api {
     fn accept_request(&self, request: accept_request::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/samlp/");
         let base_url = self.base_url.join(&endpoint).unwrap();
         let url = base_url.join(&request.client_id).unwrap();
 
-        client.get(url).form(&request)
+        self.client.get(url).form(&request)
     }
 
     fn get_metadata(&self, request: get_metadata::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/samlp/metadata/");
         let base_url = self.base_url.join(&endpoint).unwrap();
         let url = base_url.join(&request.client_id).unwrap();
 
-        client.get(url)
+        self.client.get(url)
     }
 
     fn idp_flow(&self, request: identity_provider::RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/login/callback");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
 }
 
