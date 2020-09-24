@@ -27,11 +27,10 @@ pub trait GetDeviceCode {
 
 impl GetDeviceCode for Api {
     fn device_authorization_flow(&self, request: RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/device/code");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).form(&request)
+        self.client.post(url).form(&request)
     }
 }
 
