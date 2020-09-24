@@ -19,10 +19,9 @@ pub trait Logout {
 
 impl Logout for Api {
     fn logout(&self, request: RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/v2/logout");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.get(url).query(&request)
+        self.client.get(url).query(&request)
     }
 }
 
