@@ -16,10 +16,9 @@ pub trait ChangePassword {
 
 impl ChangePassword for Api {
     fn change_password(&self, request: RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/dbconnections/change_password");
         let url = self.base_url.join(&endpoint).unwrap();
-        client.post(url).json(&request)
+        self.client.post(url).json(&request)
     }
 }
 
