@@ -16,11 +16,10 @@ pub trait RevokeRequestToken {
 
 impl RevokeRequestToken for Api {
     fn revoke_refresh_token(&self, request: RequestParameters) -> RequestBuilder {
-        let client = reqwest::Client::new();
         let endpoint = String::from("/oauth/revoke");
         let url = self.base_url.join(&endpoint).unwrap();
 
-        client.post(url).json(&request)
+        self.client.post(url).json(&request)
     }
 }
 
