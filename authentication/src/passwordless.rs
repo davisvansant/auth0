@@ -30,7 +30,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn passwordless_start_request() {
+    fn passwordless_start_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let passwordless = Api::init(base_url, authentication);
@@ -62,7 +62,7 @@ mod tests {
     }
 
     #[test]
-    fn passwordless_login_request() {
+    fn passwordless_login_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let passwordless = Api::init(base_url, authentication);
