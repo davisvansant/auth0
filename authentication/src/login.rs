@@ -24,7 +24,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn enterprise_request() {
+    fn enterprise_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
@@ -45,7 +45,7 @@ mod tests {
     }
 
     #[test]
-    fn passive_request() {
+    fn passive_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[test]
-    fn social_request() {
+    fn social_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
@@ -86,58 +86,5 @@ mod tests {
         assert_eq!(request.url().as_str(), test_url);
         assert_eq!(request.headers().is_empty(), true);
         assert_eq!(request.body().is_none(), true);
-    }
-
-    #[tokio::test]
-    async fn enterprise_response() {
-        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
-        let login = Api::init(base_url, authentication);
-        let test_parameters = login::enterprise::RequestParameters {
-            response_type: String::from("some_awesome_response_type"),
-            client_id: String::from("some_awesome_client_id"),
-            connection: None,
-            redirect_uri: String::from("some_awesome_redirect_uri"),
-            state: None,
-        };
-        let test_response = send_request(login.authorize(test_parameters)).await;
-        assert!(test_response.is_err());
-        assert!(test_response.unwrap_err().is_request());
-    }
-
-    #[tokio::test]
-    async fn passive_response() {
-        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
-        let login = Api::init(base_url, authentication);
-        let test_parameters = login::passive::RequestParameters {
-            response_type: String::from("some_awesome_response_type"),
-            client_id: String::from("some_awesome_client_id"),
-            connection: None,
-            redirect_uri: String::from("some_awesome_redirect_uri"),
-            scope: None,
-            state: Some(String::from("some_awesome_state")),
-        };
-        let test_response = send_request(login.authorize(test_parameters)).await;
-        assert!(test_response.is_err());
-        assert!(test_response.unwrap_err().is_request());
-    }
-
-    #[tokio::test]
-    async fn social_response() {
-        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
-        let login = Api::init(base_url, authentication);
-        let test_parameters = login::social::RequestParameters {
-            response_type: String::from("some_awesome_response_type"),
-            client_id: String::from("some_awesome_client_id"),
-            connection: None,
-            redirect_uri: String::from("some_awesome_redirect_uri"),
-            state: None,
-            additional_parameters: None,
-        };
-        let test_response = send_request(login.authorize(test_parameters)).await;
-        assert!(test_response.is_err());
-        assert!(test_response.unwrap_err().is_request());
     }
 }
