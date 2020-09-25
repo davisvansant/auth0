@@ -1,4 +1,5 @@
-use reqwest::{Client, Url};
+use reqwest::{Client, Error, RequestBuilder, Response, Url};
+use std::future::Future;
 
 pub mod authorize_application;
 pub mod change_password;
@@ -45,6 +46,10 @@ impl Api {
     }
 }
 
+pub fn send_request(request: RequestBuilder) -> impl Future<Output = Result<Response, Error>> {
+    request.send()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -64,5 +69,15 @@ mod tests {
         assert_eq!(request.url().as_str(), test_url);
         assert_eq!(request.headers().len(), 0);
         assert_eq!(request.body().is_none(), true);
+    }
+
+    #[tokio::test]
+    async fn authentication_api_send_request() {
+        let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
+        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let api = Api::init(base_url, authentication);
+        let test_response = send_request(api.client.get(api.base_url)).await;
+        assert!(test_response.is_err());
+        assert!(test_response.unwrap_err().is_request());
     }
 }
