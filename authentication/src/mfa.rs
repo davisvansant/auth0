@@ -106,7 +106,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn challenge_request() {
+    fn challenge_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
@@ -134,7 +134,7 @@ mod tests {
     }
 
     #[test]
-    fn one_time_password_request() {
+    fn one_time_password_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
@@ -163,7 +163,7 @@ mod tests {
     }
 
     #[test]
-    fn out_of_band_request() {
+    fn out_of_band_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
@@ -193,7 +193,7 @@ mod tests {
     }
 
     #[test]
-    fn recovery_code_request() {
+    fn recovery_code_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
@@ -222,7 +222,7 @@ mod tests {
     }
 
     #[test]
-    fn add_authenticator_request() {
+    fn add_authenticator_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
@@ -249,7 +249,7 @@ mod tests {
     }
 
     #[test]
-    fn list_authenticators_request() {
+    fn list_authenticators_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
@@ -265,7 +265,7 @@ mod tests {
     }
 
     #[test]
-    fn delete_authenticator_request() {
+    fn delete_authenticator_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
