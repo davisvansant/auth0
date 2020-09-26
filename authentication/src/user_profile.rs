@@ -32,7 +32,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn get_user_info_request() {
+    fn get_user_info_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let user_profile = Api::init(base_url, authentication);
