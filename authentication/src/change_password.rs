@@ -28,7 +28,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn change_password_request() {
+    fn change_password_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let change_password = Api::init(base_url, authentication);
