@@ -30,7 +30,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn register_client_request() {
+    fn register_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let dynamic_client_registration = Api::init(base_url, authentication);
