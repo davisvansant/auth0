@@ -31,7 +31,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn accept_request() {
+    fn accept_request_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let ws_federation = Api::init(base_url, authentication);
@@ -51,7 +51,7 @@ mod tests {
     }
 
     #[test]
-    fn get_metadata_request() {
+    fn get_metadata_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let ws_federation = Api::init(base_url, authentication);
