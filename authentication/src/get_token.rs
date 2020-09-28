@@ -142,7 +142,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn authorization_code_flow_request() {
+    fn authorization_code_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
@@ -174,7 +174,7 @@ mod tests {
     }
 
     #[test]
-    fn authorization_code_flow_with_pkce_request() {
+    fn authorization_code_flow_with_pkce_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
@@ -206,7 +206,7 @@ mod tests {
     }
 
     #[test]
-    fn client_credentials_flow_request() {
+    fn client_credentials_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
@@ -237,7 +237,7 @@ mod tests {
     }
 
     #[test]
-    fn resource_owner_password_request() {
+    fn resource_owner_password_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
@@ -274,7 +274,7 @@ mod tests {
     }
 
     #[test]
-    fn device_authorization_flow_request() {
+    fn device_authorization_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
@@ -303,7 +303,7 @@ mod tests {
     }
 
     #[test]
-    fn refresh_token_request() {
+    fn refresh_token_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
@@ -331,7 +331,7 @@ mod tests {
     }
 
     #[test]
-    fn token_exchange_request() {
+    fn token_exchange_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
