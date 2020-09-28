@@ -1,10 +1,11 @@
 use authentication::device_code::*;
 use authentication::*;
-use mockito::{mock, Matcher};
+use mockito::mock;
 
 #[tokio::test]
 async fn device_authorization_flow_send_request() {
     let mock = mock("POST", "/oauth/device/code")
+        .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "audience=some_unique_api_id&\
             scope=some_awesome_scope&\
