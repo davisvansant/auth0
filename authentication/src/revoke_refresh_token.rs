@@ -29,7 +29,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn revoke_refresh_token_request() {
+    fn revoke_refresh_token_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let revoke_refresh_token = Api::init(base_url, authentication);
