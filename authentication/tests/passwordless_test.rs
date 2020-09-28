@@ -61,7 +61,10 @@ async fn passwordless_login_send_request() {
         audience: None,
         scope: None,
     };
-    let test_response = passwordless.passwordless_login(test_parameters).send().await;
+    let test_response = passwordless
+        .passwordless_login(test_parameters)
+        .send()
+        .await;
     mock.assert();
     assert!(mock.matched());
     assert_eq!(test_response.unwrap().status(), reqwest::StatusCode::OK);
