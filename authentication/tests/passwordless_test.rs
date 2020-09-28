@@ -3,7 +3,17 @@ use authentication::*;
 
 #[tokio::test]
 async fn passwordless_start_send_request() {
-    let base_url = reqwest::Url::parse("https://YOUR_DOMAIN").unwrap();
+    let mock = mockito::mock("POST", "/passwordless/start")
+        .with_header("content-type", "application/json")
+        .match_body(mockito::Matcher::JsonString(
+            r#"{"client_id": "some_awesome_client_id",
+            "client_secret": "some_awesome_client_secret",
+            "connection": "some_awesome_connection",
+            "email": "tester@awesome.com"}"#
+                .to_string(),
+        ))
+        .create();
+    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
     let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
     let passwordless = Api::init(base_url, authentication);
     let test_parameters = passwordless::get_code_or_link::RequestParameters {
@@ -15,14 +25,30 @@ async fn passwordless_start_send_request() {
         send: None,
         auth_params: None,
     };
-    let test_response = send_request(passwordless.passwordless_start(test_parameters)).await;
-    assert!(test_response.is_err());
-    assert!(test_response.unwrap_err().is_request());
+    let test_response = passwordless
+        .passwordless_start(test_parameters)
+        .send()
+        .await;
+    mock.assert();
+    assert!(mock.matched());
+    assert_eq!(test_response.unwrap().status(), reqwest::StatusCode::OK);
 }
 
 #[tokio::test]
 async fn passwordless_login_send_request() {
-    let base_url = reqwest::Url::parse("https://YOUR_DOMAIN").unwrap();
+    let mock = mockito::mock("POST", "/oauth/token")
+        .with_header("content-type", "application/json")
+        .match_body(mockito::Matcher::JsonString(
+            r#"{"grant_type": "some_awesome_grant_type",
+            "client_id": "some_awesome_client_id",
+            "client_secret": "some_awesome_client_secret",
+            "username": "some_awesome_username",
+            "realm": "some_awesome_realm",
+            "otp": "some_awesome_otp"}"#
+                .to_string(),
+        ))
+        .create();
+    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
     let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
     let passwordless = Api::init(base_url, authentication);
     let test_parameters = passwordless::authenticate_user::RequestParameters {
@@ -35,7 +61,8 @@ async fn passwordless_login_send_request() {
         audience: None,
         scope: None,
     };
-    let test_response = send_request(passwordless.passwordless_login(test_parameters)).await;
-    assert!(test_response.is_err());
-    assert!(test_response.unwrap_err().is_request());
+    let test_response = passwordless.passwordless_login(test_parameters).send().await;
+    mock.assert();
+    assert!(mock.matched());
+    assert_eq!(test_response.unwrap().status(), reqwest::StatusCode::OK);
 }
