@@ -40,7 +40,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn device_authorization_flow_request() {
+    fn device_authorization_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let device_code = Api::init(base_url, authentication);
