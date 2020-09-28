@@ -53,7 +53,7 @@ mod tests {
     use crate::*;
 
     #[test]
-    fn authorization_code_flow_request() {
+    fn authorization_code_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let authorize_application = Api::init(base_url, authentication);
@@ -86,7 +86,7 @@ mod tests {
     }
 
     #[test]
-    fn authorization_code_flow_with_pkce_request() {
+    fn authorization_code_flow_with_pkce_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let authorize_application = Api::init(base_url, authentication);
@@ -123,7 +123,7 @@ mod tests {
     }
 
     #[test]
-    fn implicit_flow_request() {
+    fn implicit_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
         let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
         let authorize_application = Api::init(base_url, authentication);
