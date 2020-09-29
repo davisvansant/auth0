@@ -1,9 +1,21 @@
 use authentication::signup::*;
 use authentication::*;
+use mockito::mock;
 
 #[tokio::test]
 async fn signup_send_request() {
-    let base_url = reqwest::Url::parse("https://YOUR_DOMAIN").unwrap();
+    let mock = mock("POST", "/dbconnections/signup")
+        .match_header("content-type", "application/json")
+        .match_body(mockito::Matcher::JsonString(
+            r#"{"client_id": "some_awesome_client_id",
+            "email": "some_awesome_email",
+            "password": "some_awesome_password",
+            "connection": "some_awesome_connection",
+            "username": "some_awesome_username"}"#
+                .to_string(),
+        ))
+        .create();
+    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
     let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
     let signup = Api::init(base_url, authentication);
     let test_parameters = signup::RequestParameters {
@@ -19,7 +31,8 @@ async fn signup_send_request() {
         picture: None,
         user_metadata: None,
     };
-    let test_response = send_request(signup.signup(test_parameters)).await;
-    assert!(test_response.is_err());
-    assert!(test_response.unwrap_err().is_request());
+    let test_response = signup.signup(test_parameters).send().await;
+    mock.assert();
+    assert!(mock.matched());
+    assert_eq!(test_response.unwrap().status(), reqwest::StatusCode::OK);
 }
