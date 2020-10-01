@@ -3,11 +3,12 @@ name: default
 
 steps:
 - name: auth0
-  image: rust:1.45.2
+  image: rust:1.46.0
   environment:
     RUST_BACKTRACE: full
   commands:
   - rustc --version
+  - cargo --version
   - rustup component add rustfmt clippy
   - cargo fmt -- --check
   - cargo clippy --workspace
