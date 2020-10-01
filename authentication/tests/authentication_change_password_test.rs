@@ -20,7 +20,10 @@ async fn change_password_send_request() {
         email: String::from("some_awesome_email"),
         connection: String::from("some_awesome_database_connection"),
     };
-    let test_response = send_request(change_password.change_password(test_parameters)).await;
+    let test_response = change_password
+        .change_password(test_parameters)
+        .send()
+        .await;
     mock.assert();
     assert!(mock.matched());
     assert_eq!(test_response.unwrap().status(), reqwest::StatusCode::OK);
