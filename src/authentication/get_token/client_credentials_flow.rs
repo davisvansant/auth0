@@ -1,4 +1,4 @@
-pub use crate::get_token::*;
+pub use crate::authentication::get_token::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestParameters {

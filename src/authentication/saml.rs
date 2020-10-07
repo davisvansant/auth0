@@ -1,4 +1,4 @@
-use crate::Api;
+use crate::authentication::Api;
 use reqwest::RequestBuilder;
 pub use serde::{Deserialize, Serialize};
 
@@ -40,7 +40,7 @@ impl SAML for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
+    use crate::authentication::*;
 
     #[test]
     fn accept_build_request() {

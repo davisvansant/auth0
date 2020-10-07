@@ -1,4 +1,4 @@
-use crate::Api;
+use crate::authentication::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
@@ -37,7 +37,7 @@ impl GetDeviceCode for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
+    use crate::authentication::*;
 
     #[test]
     fn device_authorization_flow_build_request() {

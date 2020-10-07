@@ -1,4 +1,4 @@
-use crate::mfa::*;
+use crate::authentication::mfa::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestParameters {

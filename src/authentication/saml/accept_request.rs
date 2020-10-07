@@ -1,4 +1,4 @@
-use crate::saml::*;
+use crate::authentication::saml::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestParameters {

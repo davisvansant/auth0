@@ -1,4 +1,4 @@
-use crate::passwordless::*;
+use crate::authentication::passwordless::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestParameters {

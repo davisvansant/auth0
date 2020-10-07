@@ -1,4 +1,4 @@
-use crate::Api;
+use crate::authentication::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
@@ -27,7 +27,7 @@ impl Passwordless for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
+    use crate::authentication::*;
 
     #[test]
     fn passwordless_start_build_request() {

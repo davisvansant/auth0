@@ -1,4 +1,4 @@
-use crate::Api;
+use crate::authentication::Api;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
@@ -29,7 +29,7 @@ impl UserInfo for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
+    use crate::authentication::*;
 
     #[test]
     fn get_user_info_build_request() {

@@ -1,4 +1,4 @@
-use crate::Api;
+use crate::authentication::Api;
 use reqwest::header::{HeaderMap, HeaderName, HeaderValue};
 use reqwest::RequestBuilder;
 pub use serde::{Deserialize, Serialize};
@@ -139,7 +139,7 @@ impl GetToken for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
+    use crate::authentication::*;
 
     #[test]
     fn authorization_code_flow_build_request() {

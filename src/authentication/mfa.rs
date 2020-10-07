@@ -1,4 +1,4 @@
-use crate::Api;
+use crate::authentication::Api;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::RequestBuilder;
 pub use serde::{Deserialize, Serialize};
@@ -103,7 +103,7 @@ impl MultiFactorAuthentication for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
+    use crate::authentication::*;
 
     #[test]
     fn challenge_build_request() {

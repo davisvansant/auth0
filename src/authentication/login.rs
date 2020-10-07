@@ -1,4 +1,4 @@
-use crate::Api;
+use crate::authentication::Api;
 use reqwest::RequestBuilder;
 pub use serde::{Deserialize, Serialize};
 
@@ -21,7 +21,7 @@ impl Login for Api {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::*;
+    use crate::authentication::*;
 
     #[test]
     fn enterprise_build_request() {

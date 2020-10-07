@@ -1,4 +1,4 @@
-use crate::ws_federation::*;
+use crate::authentication::ws_federation::*;
 
 #[derive(Serialize, Deserialize)]
 pub struct RequestParameters {
