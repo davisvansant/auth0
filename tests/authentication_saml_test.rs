@@ -1,5 +1,5 @@
-use authentication::saml::*;
-use authentication::*;
+use auth0::authentication::saml::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

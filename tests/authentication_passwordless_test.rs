@@ -1,5 +1,5 @@
-use authentication::passwordless::*;
-use authentication::*;
+use auth0::authentication::passwordless::*;
+use auth0::authentication::*;
 
 #[tokio::test]
 async fn passwordless_start_send_request() {

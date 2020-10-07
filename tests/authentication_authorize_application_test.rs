@@ -1,5 +1,5 @@
-use authentication::authorize_application::*;
-use authentication::*;
+use auth0::authentication::authorize_application::*;
+use auth0::authentication::*;
 use mockito::{mock, Matcher};
 
 #[tokio::test]

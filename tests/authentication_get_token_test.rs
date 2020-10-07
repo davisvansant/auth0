@@ -1,5 +1,5 @@
-use authentication::get_token::*;
-use authentication::*;
+use auth0::authentication::get_token::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

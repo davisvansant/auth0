@@ -1,5 +1,5 @@
-use authentication::user_profile::*;
-use authentication::*;
+use auth0::authentication::user_profile::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

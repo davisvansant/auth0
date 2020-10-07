@@ -1,5 +1,5 @@
-use authentication::ws_federation::*;
-use authentication::*;
+use auth0::authentication::ws_federation::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

@@ -1,5 +1,5 @@
-use authentication::dynamic_client_registration::*;
-use authentication::*;
+use auth0::authentication::dynamic_client_registration::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

@@ -1,5 +1,5 @@
-use authentication::login::*;
-use authentication::*;
+use auth0::authentication::login::*;
+use auth0::authentication::*;
 
 #[tokio::test]
 async fn enterprise_send_request() {

@@ -1,5 +1,5 @@
-use authentication::logout::*;
-use authentication::*;
+use auth0::authentication::logout::*;
+use auth0::authentication::*;
 
 #[tokio::test]
 async fn logout_send_request() {

@@ -1,5 +1,5 @@
-use authentication::revoke_refresh_token::*;
-use authentication::*;
+use auth0::authentication::revoke_refresh_token::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

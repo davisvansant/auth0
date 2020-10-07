@@ -1,5 +1,5 @@
-use authentication::mfa::*;
-use authentication::*;
+use auth0::authentication::mfa::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

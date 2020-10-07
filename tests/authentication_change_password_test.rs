@@ -1,5 +1,5 @@
-use authentication::change_password::*;
-use authentication::*;
+use auth0::authentication::change_password::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]

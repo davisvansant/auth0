@@ -1,5 +1,5 @@
-use authentication::device_code::*;
-use authentication::*;
+use auth0::authentication::device_code::*;
+use auth0::authentication::*;
 use mockito::mock;
 
 #[tokio::test]
