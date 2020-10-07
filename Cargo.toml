@@ -9,17 +9,11 @@ license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[features]
-default = [ "authentication" ]
-management_api = [ "management" ]
-
 [dependencies]
-authentication = { path = "./authentication", optional = true }
-management = { path = "./management", optional = true }
+reqwest = { version = "0.10.8", features = ["json"] }
+serde = { version = "1.0.115", features = ["derive"] }
+serde_json = "1.0.57"
 
-[workspace]
-
-members = [
-  "authentication",
-  "management"
-]
+[dev-dependencies]
+tokio = { version = "0.2.22", features = ["macros"] }
+mockito = { version = "0.27.0", default-features = false }
