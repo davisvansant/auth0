@@ -1,3 +1,10 @@
+## 0.3.0 (2020-10-8)
+___
+
+ - Cleanup and move initial `authentication` and `management` crates up under main `auth0` src
+ - Add new steps in `.drone.yml` to break out individual tests
+ - Bump to Rust `1.47.0`
+
 ## 0.2.0 (2020-10-5)
 ___
 
