@@ -1,10 +1,12 @@
 use auth0::authentication::get_token::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn authorization_code_flow_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant&\
@@ -13,7 +15,7 @@ async fn authorization_code_flow_send_request() {
             code=some_awesome_code",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::authorization_code_flow::RequestParameters {
@@ -34,7 +36,9 @@ async fn authorization_code_flow_send_request() {
 
 #[tokio::test]
 async fn authorization_code_flow_with_pkce_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant&\
@@ -43,7 +47,7 @@ async fn authorization_code_flow_with_pkce_send_request() {
             code_verifier=some_awesome_code_verifier",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::authorization_code_flow_with_pkce::RequestParameters {
@@ -64,7 +68,9 @@ async fn authorization_code_flow_with_pkce_send_request() {
 
 #[tokio::test]
 async fn client_credentials_flow_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -73,7 +79,7 @@ async fn client_credentials_flow_send_request() {
             audience=some_awesome_audience_api",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::client_credentials_flow::RequestParameters {
@@ -93,7 +99,9 @@ async fn client_credentials_flow_send_request() {
 
 #[tokio::test]
 async fn resource_owner_password_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -103,7 +111,7 @@ async fn resource_owner_password_send_request() {
             auth0_forwarded_for=some_ip_address",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::resource_owner_password::RequestParameters {
@@ -128,7 +136,9 @@ async fn resource_owner_password_send_request() {
 
 #[tokio::test]
 async fn device_authorization_flow_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -136,7 +146,7 @@ async fn device_authorization_flow_send_request() {
             device_code=some_awesome_device_code",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::device_authorization_flow::RequestParameters {
@@ -155,7 +165,9 @@ async fn device_authorization_flow_send_request() {
 
 #[tokio::test]
 async fn refresh_token_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -163,7 +175,7 @@ async fn refresh_token_send_request() {
             refresh_token=some_awesome_refresh_token",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::refresh_token::RequestParameters {
@@ -181,7 +193,9 @@ async fn refresh_token_send_request() {
 
 #[tokio::test]
 async fn token_exchange_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -190,7 +204,7 @@ async fn token_exchange_send_request() {
             client_id=some_awesome_client_id",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::token_exchange_for_native_social::RequestParameters {

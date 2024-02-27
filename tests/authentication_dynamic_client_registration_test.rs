@@ -1,10 +1,12 @@
 use auth0::authentication::dynamic_client_registration::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn register_send_request() {
-    let mock = mock("POST", "/oidc/register")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oidc/register")
         .match_header("content-type", "application/json")
         .match_body(mockito::Matcher::JsonString(
             r#"{"client_name": "some_awesome_client_name",
@@ -13,7 +15,7 @@ async fn register_send_request() {
                 .to_string(),
         ))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let dynamic_client_registration = Api::init(base_url, authentication);
     let test_parameters = dynamic_client_registration::RequestParameters {

@@ -1,14 +1,16 @@
 use auth0::authentication::saml::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn accept_send_request() {
-    let mock = mock("GET", "/samlp/some_awesome_client_id")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/samlp/some_awesome_client_id")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body("connection=some_awesome_connection")
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let saml = Api::init(base_url, authentication);
     let test_parameters = saml::accept_request::RequestParameters {
@@ -23,8 +25,10 @@ async fn accept_send_request() {
 
 #[tokio::test]
 async fn get_metadata_send_request() {
-    let mock = mock("GET", "/samlp/metadata/some_awesome_client_id").create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/samlp/metadata/some_awesome_client_id").create();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let saml = Api::init(base_url, authentication);
     let test_parameters = saml::get_metadata::RequestParameters {
@@ -38,14 +42,16 @@ async fn get_metadata_send_request() {
 
 #[tokio::test]
 async fn idp_flow_send_request() {
-    let mock = mock("POST", "/login/callback")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/login/callback")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "connection=some_awesome_connection&\
             SAMLResponse=some_awesome_saml_response",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let saml = Api::init(base_url, authentication);
     let test_parameters = saml::identity_provider::RequestParameters {

@@ -1,10 +1,12 @@
 use auth0::authentication::revoke_refresh_token::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn revoke_refresh_token_send_request() {
-    let mock = mock("POST", "/oauth/revoke")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/revoke")
         .match_header("content-type", "application/json")
         .match_body(mockito::Matcher::JsonString(
             r#"{"client_id": "some_awesome_client_id",
@@ -13,7 +15,7 @@ async fn revoke_refresh_token_send_request() {
                 .to_string(),
         ))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let revoke_refresh_token = Api::init(base_url, authentication);
     let test_parameters = revoke_refresh_token::RequestParameters {

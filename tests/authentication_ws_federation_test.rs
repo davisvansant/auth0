@@ -1,11 +1,13 @@
 use auth0::authentication::ws_federation::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn accept_request_send_request() {
-    let mock = mock("GET", "/wsfed/some_awesome_client_id").create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/wsfed/some_awesome_client_id").create();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let ws_federation = Api::init(base_url, authentication);
     let test_parameters = ws_federation::accept_request::RequestParameters {
@@ -23,12 +25,14 @@ async fn accept_request_send_request() {
 
 #[tokio::test]
 async fn get_metadata_send_request() {
-    let mock = mock(
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock(
         "GET",
         "/wsfed/FederationMetadata/2007-06/FederationMetadata.xml",
     )
     .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let ws_federation = Api::init(base_url, authentication);
     let test_response = ws_federation.get_metadata().send().await;

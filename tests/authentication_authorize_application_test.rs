@@ -1,10 +1,12 @@
 use auth0::authentication::authorize_application::*;
 use auth0::authentication::*;
-use mockito::{mock, Matcher};
+use mockito::{Matcher, Server};
 
 #[tokio::test]
 async fn authorization_code_flow_send_request() {
-    let mock = mock("GET", "/authorize")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/authorize")
         .match_query(Matcher::AllOf(vec![
             Matcher::UrlEncoded("audience".into(), "some_awesome_audience".into()),
             Matcher::UrlEncoded("scope".into(), "some_awesome_scope".into()),
@@ -13,7 +15,7 @@ async fn authorization_code_flow_send_request() {
             Matcher::UrlEncoded("state".into(), "some_awesome_state".into()),
         ]))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let authorize_application = Api::init(base_url, authentication);
     let test_parameters = authorize_application::authorization_code_flow::RequestParameters {
@@ -37,7 +39,9 @@ async fn authorization_code_flow_send_request() {
 
 #[tokio::test]
 async fn authorization_code_flow_with_pkce_send_request() {
-    let mock = mock("GET", "/authorize")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/authorize")
         .match_query(Matcher::AllOf(vec![
             Matcher::UrlEncoded("audience".into(), "some_awesome_audience".into()),
             Matcher::UrlEncoded("scope".into(), "some_awesome_scope".into()),
@@ -54,7 +58,7 @@ async fn authorization_code_flow_with_pkce_send_request() {
             ),
         ]))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let authorize_application = Api::init(base_url, authentication);
     let test_parameters = authorize_application::pkce::RequestParameters {
@@ -80,7 +84,9 @@ async fn authorization_code_flow_with_pkce_send_request() {
 
 #[tokio::test]
 async fn implicit_flow_send_request() {
-    let mock = mock("GET", "/authorize")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/authorize")
         .match_query(Matcher::AllOf(vec![
             Matcher::UrlEncoded("audience".into(), "some_awesome_audience".into()),
             Matcher::UrlEncoded("scope".into(), "some_awesome_scope".into()),
@@ -89,7 +95,7 @@ async fn implicit_flow_send_request() {
             Matcher::UrlEncoded("state".into(), "some_awesome_state".into()),
         ]))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
     let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let authorize_application = Api::init(base_url, authentication);
     let test_parameters = authorize_application::implicit_flow::RequestParameters {
