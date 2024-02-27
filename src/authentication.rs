@@ -26,15 +26,30 @@ pub enum AuthenticationMethod {
 #[derive(Debug, Clone)]
 pub struct Api {
     pub base_url: Url,
-    pub authentication: AuthenticationMethod,
+    pub authentication: Option<AuthenticationMethod>,
     client: Client,
 }
 
 impl Api {
+    /// Create a new instance of the API client.
+    pub fn new(base_url: Url) -> Api {
+        Api {
+            base_url,
+            authentication: None,
+            client: Api::build_client(),
+        }
+    }
+
+    /// Set the authentication method for the API client.
+    pub fn set_authentication_method(&mut self, authentication: Option<AuthenticationMethod>) {
+        self.authentication = authentication;
+    }
+
+    /// Initialize the API client with a base URL and an authentication method.
     pub fn init(base_url: Url, authentication: AuthenticationMethod) -> Api {
         Api {
             base_url,
-            authentication,
+            authentication: Some(authentication),
             client: Api::build_client(),
         }
     }
