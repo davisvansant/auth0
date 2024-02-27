@@ -2,7 +2,7 @@ use crate::authentication::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     #[serde(rename(serialize = "returnTo"))]
     #[serde(skip_serializing_if = "Option::is_none")]

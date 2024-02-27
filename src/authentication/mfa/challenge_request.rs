@@ -1,6 +1,6 @@
 use crate::authentication::mfa::*;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     pub mfa_token: String,
     pub client_id: String,

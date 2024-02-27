@@ -2,7 +2,7 @@ use crate::authentication::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub audience: Option<String>,
@@ -11,7 +11,7 @@ pub struct RequestParameters {
     pub client_id: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResponseValues {
     pub device_code: String,
     pub user_code: String,

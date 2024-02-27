@@ -1,6 +1,6 @@
 use crate::authentication::passwordless::*;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     pub client_id: String,
     pub client_secret: String,

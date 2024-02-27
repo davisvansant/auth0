@@ -3,7 +3,7 @@ use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     pub access_token: String,
 }

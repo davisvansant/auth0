@@ -1,4 +1,5 @@
 use reqwest::{Client, Url};
+use serde::{Deserialize, Serialize};
 
 pub mod authorize_application;
 pub mod change_password;
@@ -15,12 +16,14 @@ pub mod signup;
 pub mod user_profile;
 pub mod ws_federation;
 
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum AuthenticationMethod {
     OAuth2Token(String),
     ClientIDClientSecret(String, String),
     ClientID(String),
 }
 
+#[derive(Debug, Clone)]
 pub struct Api {
     pub base_url: Url,
     pub authentication: AuthenticationMethod,

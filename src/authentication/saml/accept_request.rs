@@ -1,6 +1,6 @@
 use crate::authentication::saml::*;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     #[serde(skip_serializing)]
     pub client_id: String,
