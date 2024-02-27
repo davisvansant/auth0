@@ -2,7 +2,7 @@
 name = "auth0"
 version = "0.3.0"
 authors = ["Davis Van Sant <davisvansant@users.noreply.github.com>"]
-edition = "2018"
+edition = "2021"
 description = "Auth0 API library"
 homepage = "https://github.com/davisvansant/auth0"
 license = "MIT"

@@ -1,3 +1,11 @@
+## 0.4.0 (2024-2-27)
+
+- fix!: fix typo in Authentication
+  BREAKING it is a breaking change for those who relied on the typo. Find and replace `Authenication` to `Authentication` in your code.
+- fix: make the structs Debug/Clone
+- fix: update reqwest and other test dependencies
+- fix: update the Rust edition to `2021` and Rust to `1.75.0`
+
 ## 0.3.0 (2020-10-8)
 ___
 
