@@ -14,7 +14,7 @@ async fn authorization_code_flow_send_request() {
         ]))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let authorize_application = Api::init(base_url, authentication);
     let test_parameters = authorize_application::authorization_code_flow::RequestParameters {
         audience: Some(String::from("some_awesome_audience")),
@@ -55,7 +55,7 @@ async fn authorization_code_flow_with_pkce_send_request() {
         ]))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let authorize_application = Api::init(base_url, authentication);
     let test_parameters = authorize_application::pkce::RequestParameters {
         audience: Some(String::from("some_awesome_audience")),
@@ -90,7 +90,7 @@ async fn implicit_flow_send_request() {
         ]))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let authorize_application = Api::init(base_url, authentication);
     let test_parameters = authorize_application::implicit_flow::RequestParameters {
         audience: Some(String::from("some_awesome_audience")),

@@ -42,7 +42,7 @@ mod tests {
     #[test]
     fn device_authorization_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let device_code = Api::init(base_url, authentication);
         let parameters = device_code::RequestParameters {
             audience: Some(String::from("some_unique_api_id")),

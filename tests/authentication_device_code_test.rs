@@ -13,7 +13,7 @@ async fn device_authorization_flow_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_device = Api::init(base_url, authentication);
     let test_parameters = device_code::RequestParameters {
         audience: Some(String::from("some_unique_api_id")),

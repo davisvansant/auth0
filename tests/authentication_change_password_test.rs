@@ -13,7 +13,7 @@ async fn change_password_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let change_password = Api::init(base_url, authentication);
     let test_parameters = change_password::RequestParameters {
         client_id: None,

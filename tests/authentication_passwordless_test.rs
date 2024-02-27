@@ -14,7 +14,7 @@ async fn passwordless_start_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let passwordless = Api::init(base_url, authentication);
     let test_parameters = passwordless::get_code_or_link::RequestParameters {
         client_id: String::from("some_awesome_client_id"),
@@ -49,7 +49,7 @@ async fn passwordless_login_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let passwordless = Api::init(base_url, authentication);
     let test_parameters = passwordless::authenticate_user::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),

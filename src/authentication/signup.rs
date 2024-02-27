@@ -44,7 +44,7 @@ mod tests {
     #[test]
     fn signup_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let signup = Api::init(base_url, authentication);
         let parameters = signup::RequestParameters {
             client_id: String::from("some_awesome_client_id"),

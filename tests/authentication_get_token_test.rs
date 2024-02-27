@@ -14,7 +14,7 @@ async fn authorization_code_flow_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::authorization_code_flow::RequestParameters {
         grant_type: String::from("some_awesome_grant"),
@@ -44,7 +44,7 @@ async fn authorization_code_flow_with_pkce_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::authorization_code_flow_with_pkce::RequestParameters {
         grant_type: String::from("some_awesome_grant"),
@@ -74,7 +74,7 @@ async fn client_credentials_flow_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::client_credentials_flow::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -104,7 +104,7 @@ async fn resource_owner_password_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::resource_owner_password::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -137,7 +137,7 @@ async fn device_authorization_flow_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::device_authorization_flow::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -164,7 +164,7 @@ async fn refresh_token_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::refresh_token::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -191,7 +191,7 @@ async fn token_exchange_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_token = Api::init(base_url, authentication);
     let test_parameters = get_token::token_exchange_for_native_social::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),

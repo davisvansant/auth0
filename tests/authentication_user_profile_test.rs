@@ -8,7 +8,7 @@ async fn user_profile_send_request() {
         .match_header("authorization", "Bearer some_awesome_access_token")
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let user_profile = Api::init(base_url, authentication);
     let test_parameters = user_profile::RequestParameters {
         access_token: String::from("some_awesome_access_token"),

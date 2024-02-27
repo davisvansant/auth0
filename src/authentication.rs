@@ -15,7 +15,7 @@ pub mod signup;
 pub mod user_profile;
 pub mod ws_federation;
 
-pub enum AuthenicationMethod {
+pub enum AuthenticationMethod {
     OAuth2Token(String),
     ClientIDClientSecret(String, String),
     ClientID(String),
@@ -23,12 +23,12 @@ pub enum AuthenicationMethod {
 
 pub struct Api {
     pub base_url: Url,
-    pub authentication: AuthenicationMethod,
+    pub authentication: AuthenticationMethod,
     client: Client,
 }
 
 impl Api {
-    pub fn init(base_url: Url, authentication: AuthenicationMethod) -> Api {
+    pub fn init(base_url: Url, authentication: AuthenticationMethod) -> Api {
         Api {
             base_url,
             authentication,
@@ -52,7 +52,7 @@ mod tests {
     #[test]
     fn authentication_api_init() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let api = Api::init(base_url, authentication);
         let request = api
             .client

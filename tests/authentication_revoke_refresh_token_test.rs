@@ -14,7 +14,7 @@ async fn revoke_refresh_token_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let revoke_refresh_token = Api::init(base_url, authentication);
     let test_parameters = revoke_refresh_token::RequestParameters {
         client_id: String::from("some_awesome_client_id"),

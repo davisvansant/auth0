@@ -13,7 +13,7 @@ async fn challenge_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::challenge_request::RequestParameters {
         mfa_token: String::from("some_awesome_mfa_token"),
@@ -41,7 +41,7 @@ async fn one_time_password_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::one_time_password::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -68,7 +68,7 @@ async fn out_of_band_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::out_of_band::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -96,7 +96,7 @@ async fn recovery_code_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::recovery_code::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -122,7 +122,7 @@ async fn add_authenticator_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::add_authenticator::RequestParameters {
         client_id: String::from("some_awesome_client_id"),
@@ -144,7 +144,7 @@ async fn list_authenticators_send_request() {
         .match_header("content-type", "application/json")
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::list_authenticators::RequestParameters {
         access_token: String::from("some_awesome_access_token"),
@@ -165,7 +165,7 @@ async fn delete_authenticator_send_request() {
     .match_header("content-type", "application/json")
     .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::delete_authenticator::RequestParameters {
         access_token: String::from("some_awesome_access_token"),

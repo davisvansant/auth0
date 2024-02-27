@@ -9,7 +9,7 @@ async fn accept_send_request() {
         .match_body("connection=some_awesome_connection")
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let saml = Api::init(base_url, authentication);
     let test_parameters = saml::accept_request::RequestParameters {
         client_id: String::from("some_awesome_client_id"),
@@ -25,7 +25,7 @@ async fn accept_send_request() {
 async fn get_metadata_send_request() {
     let mock = mock("GET", "/samlp/metadata/some_awesome_client_id").create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let saml = Api::init(base_url, authentication);
     let test_parameters = saml::get_metadata::RequestParameters {
         client_id: String::from("some_awesome_client_id"),
@@ -46,7 +46,7 @@ async fn idp_flow_send_request() {
         )
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let saml = Api::init(base_url, authentication);
     let test_parameters = saml::identity_provider::RequestParameters {
         connection: String::from("some_awesome_connection"),

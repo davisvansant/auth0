@@ -16,7 +16,7 @@ async fn signup_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let signup = Api::init(base_url, authentication);
     let test_parameters = signup::RequestParameters {
         client_id: String::from("some_awesome_client_id"),

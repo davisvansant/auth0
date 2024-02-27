@@ -14,7 +14,7 @@ async fn register_send_request() {
         ))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let dynamic_client_registration = Api::init(base_url, authentication);
     let test_parameters = dynamic_client_registration::RequestParameters {
         client_name: Some(String::from("some_awesome_client_name")),

@@ -55,7 +55,7 @@ mod tests {
     #[test]
     fn authorization_code_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let authorize_application = Api::init(base_url, authentication);
         let parameters = authorize_application::authorization_code_flow::RequestParameters {
             audience: Some(String::from("some_awesome_audience")),
@@ -88,7 +88,7 @@ mod tests {
     #[test]
     fn authorization_code_flow_with_pkce_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let authorize_application = Api::init(base_url, authentication);
         let parameters = authorize_application::pkce::RequestParameters {
             audience: Some(String::from("some_awesome_audience")),
@@ -125,7 +125,7 @@ mod tests {
     #[test]
     fn implicit_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let authorize_application = Api::init(base_url, authentication);
         let parameters = authorize_application::implicit_flow::RequestParameters {
             audience: Some(String::from("some_awesome_audience")),

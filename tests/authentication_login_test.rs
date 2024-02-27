@@ -14,7 +14,7 @@ async fn enterprise_send_request() {
         ]))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let login = Api::init(base_url, authentication);
     let test_parameters = login::enterprise::RequestParameters {
         response_type: String::from("some_awesome_response_type"),
@@ -43,7 +43,7 @@ async fn passive_send_request() {
         ]))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let login = Api::init(base_url, authentication);
     let test_parameters = login::passive::RequestParameters {
         response_type: String::from("some_awesome_response_type"),
@@ -72,7 +72,7 @@ async fn social_send_request() {
         ]))
         .create();
     let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let login = Api::init(base_url, authentication);
     let test_parameters = login::social::RequestParameters {
         response_type: String::from("some_awesome_response_type"),

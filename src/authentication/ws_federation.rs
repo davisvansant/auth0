@@ -33,7 +33,7 @@ mod tests {
     #[test]
     fn accept_request_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let ws_federation = Api::init(base_url, authentication);
         let parameters = ws_federation::accept_request::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
@@ -53,7 +53,7 @@ mod tests {
     #[test]
     fn get_metadata_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let ws_federation = Api::init(base_url, authentication);
         let request = ws_federation.get_metadata().build().unwrap();
         let test_url = String::from(

@@ -32,7 +32,7 @@ mod tests {
     #[test]
     fn passwordless_start_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let passwordless = Api::init(base_url, authentication);
         let parameters = passwordless::get_code_or_link::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
@@ -64,7 +64,7 @@ mod tests {
     #[test]
     fn passwordless_login_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let passwordless = Api::init(base_url, authentication);
         let parameters = passwordless::authenticate_user::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),

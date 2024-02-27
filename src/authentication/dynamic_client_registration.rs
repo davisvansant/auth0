@@ -32,7 +32,7 @@ mod tests {
     #[test]
     fn register_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let dynamic_client_registration = Api::init(base_url, authentication);
         let parameters = dynamic_client_registration::RequestParameters {
             client_name: Some(String::from("some_awesome_client_name")),

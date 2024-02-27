@@ -45,7 +45,7 @@ mod tests {
     #[test]
     fn accept_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let saml = Api::init(base_url, authentication);
         let parameters = saml::accept_request::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
@@ -66,7 +66,7 @@ mod tests {
     #[test]
     fn get_metadata_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let saml = Api::init(base_url, authentication);
         let parameters = saml::get_metadata::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
@@ -82,7 +82,7 @@ mod tests {
     #[test]
     fn idp_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let saml = Api::init(base_url, authentication);
         let parameters = saml::identity_provider::RequestParameters {
             connection: String::from("some_awesome_connection"),

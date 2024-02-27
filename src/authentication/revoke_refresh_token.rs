@@ -31,7 +31,7 @@ mod tests {
     #[test]
     fn revoke_refresh_token_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let revoke_refresh_token = Api::init(base_url, authentication);
         let parameters = revoke_refresh_token::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
