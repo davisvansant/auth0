@@ -1,4 +1,5 @@
 use reqwest::{Client, Url};
+use serde::{Deserialize, Serialize};
 
 pub mod authorize_application;
 pub mod change_password;
@@ -15,23 +16,40 @@ pub mod signup;
 pub mod user_profile;
 pub mod ws_federation;
 
-pub enum AuthenicationMethod {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum AuthenticationMethod {
     OAuth2Token(String),
     ClientIDClientSecret(String, String),
     ClientID(String),
 }
 
+#[derive(Debug, Clone)]
 pub struct Api {
     pub base_url: Url,
-    pub authentication: AuthenicationMethod,
+    pub authentication: Option<AuthenticationMethod>,
     client: Client,
 }
 
 impl Api {
-    pub fn init(base_url: Url, authentication: AuthenicationMethod) -> Api {
+    /// Create a new instance of the API client.
+    pub fn new(base_url: Url) -> Api {
         Api {
             base_url,
-            authentication,
+            authentication: None,
+            client: Api::build_client(),
+        }
+    }
+
+    /// Set the authentication method for the API client.
+    pub fn set_authentication_method(&mut self, authentication: Option<AuthenticationMethod>) {
+        self.authentication = authentication;
+    }
+
+    /// Initialize the API client with a base URL and an authentication method.
+    pub fn init(base_url: Url, authentication: AuthenticationMethod) -> Api {
+        Api {
+            base_url,
+            authentication: Some(authentication),
             client: Api::build_client(),
         }
     }
@@ -52,7 +70,7 @@ mod tests {
     #[test]
     fn authentication_api_init() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let api = Api::init(base_url, authentication);
         let request = api
             .client

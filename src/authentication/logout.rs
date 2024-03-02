@@ -2,7 +2,7 @@ use crate::authentication::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     #[serde(rename(serialize = "returnTo"))]
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -33,7 +33,7 @@ mod tests {
     #[test]
     fn logout_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let logout = Api::init(base_url, authentication);
         let parameters = logout::RequestParameters {
             return_to: Some(String::from("some_awesome_return")),

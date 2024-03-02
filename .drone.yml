@@ -1,9 +1,10 @@
+type: docker
 kind: pipeline
 name: default
 
 steps:
 - name: auth0 - style
-  image: rust:1.47.0
+  image: rust:1.75.0
   environment:
     RUST_BACKTRACE: full
   commands:
@@ -14,7 +15,7 @@ steps:
   - cargo fmt --all -- --check
 
 - name: auth0 - lint
-  image: rust:1.47.0
+  image: rust:1.75.0
   environment:
     RUST_BACKTRACE: full
   commands:
@@ -25,7 +26,7 @@ steps:
   - cargo clippy --workspace --all-targets --all-features
 
 - name: auth0 - test
-  image: rust:1.47.0
+  image: rust:1.75.0
   environment:
     RUST_BACKTRACE: full
   commands:

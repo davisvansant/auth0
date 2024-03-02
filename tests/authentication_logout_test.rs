@@ -1,17 +1,20 @@
 use auth0::authentication::logout::*;
 use auth0::authentication::*;
+use mockito::Server;
 
 #[tokio::test]
 async fn logout_send_request() {
-    let mock = mockito::mock("GET", "/v2/logout")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/v2/logout")
         .match_query(mockito::Matcher::AllOf(vec![
             mockito::Matcher::UrlEncoded("returnTo".into(), "some_awesome_return".into()),
             mockito::Matcher::UrlEncoded("client_id".into(), "some_awesome_client_id".into()),
             mockito::Matcher::UrlEncoded("federated".into(), "some_awesome_federated".into()),
         ]))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let logout = Api::init(base_url, authentication);
     let test_parameters = logout::RequestParameters {
         return_to: Some(String::from("some_awesome_return")),

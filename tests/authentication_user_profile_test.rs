@@ -1,14 +1,16 @@
 use auth0::authentication::user_profile::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn user_profile_send_request() {
-    let mock = mock("GET", "/userinfo")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/userinfo")
         .match_header("authorization", "Bearer some_awesome_access_token")
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let user_profile = Api::init(base_url, authentication);
     let test_parameters = user_profile::RequestParameters {
         access_token: String::from("some_awesome_access_token"),

@@ -1,9 +1,12 @@
 use auth0::authentication::passwordless::*;
 use auth0::authentication::*;
+use mockito::Server;
 
 #[tokio::test]
 async fn passwordless_start_send_request() {
-    let mock = mockito::mock("POST", "/passwordless/start")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/passwordless/start")
         .with_header("content-type", "application/json")
         .match_body(mockito::Matcher::JsonString(
             r#"{"client_id": "some_awesome_client_id",
@@ -13,8 +16,8 @@ async fn passwordless_start_send_request() {
                 .to_string(),
         ))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let passwordless = Api::init(base_url, authentication);
     let test_parameters = passwordless::get_code_or_link::RequestParameters {
         client_id: String::from("some_awesome_client_id"),
@@ -36,7 +39,9 @@ async fn passwordless_start_send_request() {
 
 #[tokio::test]
 async fn passwordless_login_send_request() {
-    let mock = mockito::mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .with_header("content-type", "application/json")
         .match_body(mockito::Matcher::JsonString(
             r#"{"grant_type": "some_awesome_grant_type",
@@ -48,8 +53,8 @@ async fn passwordless_login_send_request() {
                 .to_string(),
         ))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let passwordless = Api::init(base_url, authentication);
     let test_parameters = passwordless::authenticate_user::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),

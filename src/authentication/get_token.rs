@@ -144,7 +144,7 @@ mod tests {
     #[test]
     fn authorization_code_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
         let parameters = get_token::authorization_code_flow::RequestParameters {
             grant_type: String::from("some_awesome_grant"),
@@ -176,7 +176,7 @@ mod tests {
     #[test]
     fn authorization_code_flow_with_pkce_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
         let parameters = get_token::authorization_code_flow_with_pkce::RequestParameters {
             grant_type: String::from("some_awesome_grant"),
@@ -208,7 +208,7 @@ mod tests {
     #[test]
     fn client_credentials_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
         let parameters = get_token::client_credentials_flow::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
@@ -239,7 +239,7 @@ mod tests {
     #[test]
     fn resource_owner_password_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
         let parameters = get_token::resource_owner_password::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
@@ -276,7 +276,7 @@ mod tests {
     #[test]
     fn device_authorization_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
         let parameters = get_token::device_authorization_flow::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
@@ -305,7 +305,7 @@ mod tests {
     #[test]
     fn refresh_token_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
         let parameters = get_token::refresh_token::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
@@ -333,7 +333,7 @@ mod tests {
     #[test]
     fn token_exchange_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let get_token = Api::init(base_url, authentication);
         let parameters = get_token::token_exchange_for_native_social::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),

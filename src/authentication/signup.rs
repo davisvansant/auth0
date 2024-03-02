@@ -2,7 +2,7 @@ use crate::authentication::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     pub client_id: String,
     pub email: String,
@@ -44,7 +44,7 @@ mod tests {
     #[test]
     fn signup_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let signup = Api::init(base_url, authentication);
         let parameters = signup::RequestParameters {
             client_id: String::from("some_awesome_client_id"),

@@ -108,7 +108,7 @@ mod tests {
     #[test]
     fn challenge_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
         let parameters = mfa::challenge_request::RequestParameters {
             mfa_token: String::from("some_awesome_mfa_token"),
@@ -136,7 +136,7 @@ mod tests {
     #[test]
     fn one_time_password_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
         let parameters = mfa::one_time_password::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
@@ -165,7 +165,7 @@ mod tests {
     #[test]
     fn out_of_band_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
         let parameters = mfa::out_of_band::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
@@ -195,7 +195,7 @@ mod tests {
     #[test]
     fn recovery_code_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
         let parameters = mfa::recovery_code::RequestParameters {
             grant_type: String::from("some_awesome_grant_type"),
@@ -224,7 +224,7 @@ mod tests {
     #[test]
     fn add_authenticator_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
         let parameters = mfa::add_authenticator::RequestParameters {
             client_id: String::from("some_awesome_client_id"),
@@ -251,7 +251,7 @@ mod tests {
     #[test]
     fn list_authenticators_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
         let parameters = mfa::list_authenticators::RequestParameters {
             access_token: String::from("some_awesome_access_token"),
@@ -267,7 +267,7 @@ mod tests {
     #[test]
     fn delete_authenticator_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let mfa = Api::init(base_url, authentication);
         let parameters = mfa::delete_authenticator::RequestParameters {
             access_token: String::from("some_awesome_access_token"),

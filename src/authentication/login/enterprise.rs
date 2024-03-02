@@ -1,6 +1,6 @@
 use crate::authentication::login::*;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     pub response_type: String,
     pub client_id: String,

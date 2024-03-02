@@ -1,10 +1,12 @@
 use auth0::authentication::device_code::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn device_authorization_flow_send_request() {
-    let mock = mock("POST", "/oauth/device/code")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/device/code")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "audience=some_unique_api_id&\
@@ -12,8 +14,8 @@ async fn device_authorization_flow_send_request() {
             client_id=some_awesome_application_id",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let get_device = Api::init(base_url, authentication);
     let test_parameters = device_code::RequestParameters {
         audience: Some(String::from("some_unique_api_id")),

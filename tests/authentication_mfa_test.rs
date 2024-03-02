@@ -1,10 +1,12 @@
 use auth0::authentication::mfa::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn challenge_send_request() {
-    let mock = mock("POST", "/mfa/challenge")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/mfa/challenge")
         .match_header("content-type", "application/json")
         .match_body(mockito::Matcher::JsonString(
             r#"{"mfa_token": "some_awesome_mfa_token",
@@ -12,8 +14,8 @@ async fn challenge_send_request() {
                 .to_string(),
         ))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::challenge_request::RequestParameters {
         mfa_token: String::from("some_awesome_mfa_token"),
@@ -31,7 +33,9 @@ async fn challenge_send_request() {
 
 #[tokio::test]
 async fn one_time_password_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -40,8 +44,8 @@ async fn one_time_password_send_request() {
             otp=some_awesome_otp",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::one_time_password::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -58,7 +62,9 @@ async fn one_time_password_send_request() {
 
 #[tokio::test]
 async fn out_of_band_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -67,8 +73,8 @@ async fn out_of_band_send_request() {
             oob_code=some_awesome_oob_code",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::out_of_band::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -86,7 +92,9 @@ async fn out_of_band_send_request() {
 
 #[tokio::test]
 async fn recovery_code_send_request() {
-    let mock = mock("POST", "/oauth/token")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/oauth/token")
         .match_header("content-type", "application/x-www-form-urlencoded")
         .match_body(
             "grant_type=some_awesome_grant_type&\
@@ -95,8 +103,8 @@ async fn recovery_code_send_request() {
             recovery_code=some_awesome_mfa_token",
         )
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::recovery_code::RequestParameters {
         grant_type: String::from("some_awesome_grant_type"),
@@ -113,7 +121,9 @@ async fn recovery_code_send_request() {
 
 #[tokio::test]
 async fn add_authenticator_send_request() {
-    let mock = mock("POST", "/mfa/associate")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/mfa/associate")
         .match_header("content-type", "application/json")
         .match_body(mockito::Matcher::JsonString(
             r#"{"client_id": "some_awesome_client_id",
@@ -121,8 +131,8 @@ async fn add_authenticator_send_request() {
                 .to_string(),
         ))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::add_authenticator::RequestParameters {
         client_id: String::from("some_awesome_client_id"),
@@ -139,12 +149,14 @@ async fn add_authenticator_send_request() {
 
 #[tokio::test]
 async fn list_authenticators_send_request() {
-    let mock = mock("GET", "/mfa/authenticators")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("GET", "/mfa/authenticators")
         .match_header("authorization", "Bearer some_awesome_access_token")
         .match_header("content-type", "application/json")
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::list_authenticators::RequestParameters {
         access_token: String::from("some_awesome_access_token"),
@@ -157,15 +169,17 @@ async fn list_authenticators_send_request() {
 
 #[tokio::test]
 async fn delete_authenticator_send_request() {
-    let mock = mock(
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock(
         "DELETE",
         "/mfa/authenticators/some_awesome_authenticator_id",
     )
     .match_header("authorization", "Bearer some_awesome_access_token")
     .match_header("content-type", "application/json")
     .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let mfa = Api::init(base_url, authentication);
     let test_parameters = mfa::delete_authenticator::RequestParameters {
         access_token: String::from("some_awesome_access_token"),

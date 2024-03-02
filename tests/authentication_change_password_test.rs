@@ -1,10 +1,12 @@
 use auth0::authentication::change_password::*;
 use auth0::authentication::*;
-use mockito::mock;
+use mockito::Server;
 
 #[tokio::test]
 async fn change_password_send_request() {
-    let mock = mock("POST", "/dbconnections/change_password")
+    let mut server = Server::new_async().await;
+
+    let mock = server.mock("POST", "/dbconnections/change_password")
         .match_header("content-type", "application/json")
         .match_body(mockito::Matcher::JsonString(
             r#"{"email": "some_awesome_email",
@@ -12,8 +14,8 @@ async fn change_password_send_request() {
                 .to_string(),
         ))
         .create();
-    let base_url = reqwest::Url::parse(&mockito::server_url()).unwrap();
-    let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+    let base_url = reqwest::Url::parse(&server.url()).unwrap();
+    let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
     let change_password = Api::init(base_url, authentication);
     let test_parameters = change_password::RequestParameters {
         client_id: None,

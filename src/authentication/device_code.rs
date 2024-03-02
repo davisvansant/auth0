@@ -2,7 +2,7 @@ use crate::authentication::Api;
 use reqwest::RequestBuilder;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub audience: Option<String>,
@@ -11,7 +11,7 @@ pub struct RequestParameters {
     pub client_id: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ResponseValues {
     pub device_code: String,
     pub user_code: String,
@@ -42,7 +42,7 @@ mod tests {
     #[test]
     fn device_authorization_flow_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let device_code = Api::init(base_url, authentication);
         let parameters = device_code::RequestParameters {
             audience: Some(String::from("some_unique_api_id")),

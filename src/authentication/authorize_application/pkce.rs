@@ -1,6 +1,6 @@
 use crate::authentication::authorize_application::*;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestParameters {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub audience: Option<String>,

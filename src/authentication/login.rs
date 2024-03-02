@@ -26,7 +26,7 @@ mod tests {
     #[test]
     fn enterprise_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
         let parameters = login::enterprise::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
@@ -47,7 +47,7 @@ mod tests {
     #[test]
     fn passive_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
         let parameters = login::passive::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
@@ -69,7 +69,7 @@ mod tests {
     #[test]
     fn social_build_request() {
         let base_url = Url::parse("https://YOUR_DOMAIN").unwrap();
-        let authentication = AuthenicationMethod::OAuth2Token(String::from("some_awesome_token"));
+        let authentication = AuthenticationMethod::OAuth2Token(String::from("some_awesome_token"));
         let login = Api::init(base_url, authentication);
         let parameters = login::social::RequestParameters {
             response_type: String::from("some_awesome_response_type"),
